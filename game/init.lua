@@ -35,8 +35,6 @@ function initialise()
 	end
     love.mouse.setVisible(false)
 
-	local shader=require "game/crt_shader"
-	love.graphics.setShader(shader)
 
 	-- constants
 	gl.pixsize=3
@@ -84,6 +82,12 @@ function initialise()
 		gl.nodie=true
 	end
 
+	local moonshine=require("moonshine")
+	gl.effect=moonshine(moonshine.effects.scanlines)
+	gl.effect.chain(moonshine.effects.crt)
+	gl.effect.crt.distortionFactor={1.03,1.03}
+	gl.effect.scanlines.width=2
+	gl.effect.scanlines.opacity=0.7
 
 	local AISystem = require ('systems/update/AI')
 	local PositionSystem = require ('systems/update/Position')

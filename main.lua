@@ -27,7 +27,9 @@ function love.draw()
 	love.graphics.setCanvas()
 	local col=gl.clearcol
 	love.graphics.clear(col.r,col.g,col.b)
-	engine:draw()	
+	gl.effect(function()
+		engine:draw()	
+	end)
 
 	love.graphics.setColor(1,1,1,1)
 	love.graphics.print(sf("%4.1f",love.timer.getFPS()),100,100)
