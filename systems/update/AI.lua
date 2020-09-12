@@ -28,7 +28,9 @@ function AISystem:mutateAll(event)
 	for key,entity in pairs(self.targets) do
 		if entity:isActive() and entity.name=="Lander" then
 			local ai=entity:get("AI") 
-			ai.fsm:setState("mutant")
+			if ai.fsm.state ~= "die" then
+				ai.fsm:setState("mutant")
+			end
 		end
 	end
 end 
