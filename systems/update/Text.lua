@@ -32,12 +32,16 @@ function TextSystem:add(x,y,character,color_func)
 	return e
 end
 
-function TextSystem:addString(x,y,rate,str)
-	
+function TextSystem:addString(x,y,rate,str,align)
+
 	self.string_index=self.string_index+1
 	local elist={}
 	local color_func=getColorCycleFactory(rate)
 	local ln=string.len(str)
+	local width=ln*25
+	if align and align=="center" then
+		x=x-width/2
+	end
 	for i=1,ln do
 		local c=string.sub(str,i,i)
 		local e=self:add(x+(i*25),y,c,color_func)

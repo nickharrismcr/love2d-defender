@@ -26,6 +26,7 @@ function GameSystem:update(dt)
 
 	self.game.fsm:update(self.game,nil,entity,dt)
 	self.game.t = self.game.t + dt
+	gl.gamestate = self.game.fsm.state
 end
 
 function GameSystem:playerStartEvent(event)

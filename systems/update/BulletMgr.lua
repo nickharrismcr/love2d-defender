@@ -36,14 +36,15 @@ function BulletMgr:fireEvent(event)
 	if event.type_=="mini" then g=self.mini_graphic end
 	local life=3
 
-	if math.abs(event.x-ppos.x) < gl.ww then
+	if math.abs(event.x-ppos.x) < gl.ww or event.type_ == "bomb" then
 		local dx,dy = calc_fire(ppos.x,ppos.y, ps, event.x, event.y, event.accuracy, time, love.timer.getDelta() ) 
 		local npcd=NPCDraw(g,60)
 		if event.type_=="bomb" then
 			dx=0
 			dy=0
-			life=20
+			life=5
 			npcd.cycle=true
+			log.trace("bomb fired")
 		end
 
 		local bullet_fsm=FSM("Bullet",bullet_states,"fire")

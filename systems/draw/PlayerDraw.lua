@@ -6,10 +6,11 @@ local flashcols={{1,1,1,1},{1,0,0,1}}
 local black={r=0,g=0,b=0}
 local bombflashcols={red,blue,green,yellow,cyan,orange,purple,magenta}
 
-function PlayerDrawSystem:draw(dt)
+function PlayerDrawSystem:draw()
 
 	for index, value in pairs(self.targets) do
 
+		local dt=love.timer.getDelta()
 		local draw=value:get("PlayerDraw")
 		if gl.flash > 0 then
 			if gl.flash%2 == 0 then
@@ -17,7 +18,7 @@ function PlayerDrawSystem:draw(dt)
 			else
 				gl.clearcol=bombflashcols[gl.flash%8+1]
 			end
-			draw.flashcounter=draw.flashcounter+0.5
+			draw.flashcounter=draw.flashcounter+360*dt
 			if draw.flashcounter > draw.flashtime then
 				gl.flash = gl.flash - 1
 				draw.flashcounter = 0
@@ -42,12 +43,13 @@ function PlayerDrawSystem:draw(dt)
 		if draw.flash > 0 then 
 			override_col = flashcols[draw.flash]
 		end
+		if gl.gamestate=="level" then
+			self:DoDraw(gl.pixsize,translate ,pos.y,g , g.frame, draw.disperse, ai.dir, override_col)
+			self:DoDrawRadar(ai,pos)
 
-		self:DoDraw(gl.pixsize,translate ,pos.y,g , g.frame, draw.disperse, ai.dir, override_col)
-		self:DoDrawRadar(ai,pos)
-
-		if ai.thrust then
-			self:DoDraw(gl.pixsize/1.5,translate-(30*ai.dir) , pos.y+5 , tg , tg.frame, 1, ai.dir)
+			if ai.thrust then
+				self:DoDraw(gl.pixsize/1.5,translate-(30*ai.dir) , pos.y+5 , tg , tg.frame, 1, ai.dir)
+			end
 		end
 
 		draw.t1=draw.t1+1
@@ -70,13 +72,13 @@ function PlayerDrawSystem:draw(dt)
 			end
 		end
 
+
 		for i = 1, math.min(7,gl.lives) do
 			self:DoDraw(2,i*40,80 ,g , g.frame, 1, 1 )
 		end
 		for i = 1, math.min(7,gl.bombs) do
 			self:DoDraw(3,gl.radar_rect.x1-20,i*15,bg ,g.frame, 1, 1 )
 		end
-
 	end
 end
 

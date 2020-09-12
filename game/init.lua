@@ -9,7 +9,6 @@ WORLD_INACTIVE=2
 --TODO
 --hyperspace
 --level end human count/score
---bomber graphic
 --sound
 --attract mode
 
@@ -20,7 +19,7 @@ function initialise()
 
 	-- debug
 	gl.debug = false
-	gl.nodie= false
+	gl.nodie= true 
 	gl.npc_debug=false
 	gl.freeze=false 
 	-- displays
@@ -42,14 +41,14 @@ function initialise()
 	gl.ww=love.graphics.getPixelWidth()
 	gl.radar_rect={x1=gl.ww/4,y1=0,x2=gl.ww*0.75,y2=gl.wh/8}
 	gl.worldwidth = 12000
-	gl.top = 200
+	gl.top = gl.radar_rect.y2 + 30
 
-	-- TODO move these settings into level tables 
+	-- set per level
 	gl.grabspeed = 2
 	gl.landers=10
 	gl.humans=10
 	gl.lasers=10
-	gl.pods=4
+	gl.pods=0
 	gl.swarmers=15
 	gl.bombers=3
 	gl.bullet_time=3
@@ -72,6 +71,7 @@ function initialise()
 	gl.clearcol={r=0,g=0,b=0}
 	gl.flash=0
 	gl.landers_killed=0
+	gl.gamestate=""
 
 	if gl.debug then 
 		gl.landers=2

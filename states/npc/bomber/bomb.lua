@@ -20,11 +20,11 @@ function state:update (ai,world,entity,dt)
 	pos.x = pos.x + pos.dx * dt
 	pos.y = pos.y + pos.dy * dt 
 
-	if pos.y <gl.top or pos.y > (gl.wh-300) then
+	if pos.y <gl.top or pos.y > gl.wh then
 		pos.dy = - pos.dy
 	end
 
-	if coin(0.001) then
+	if coin(0.01) then
 		entity.eventManager:fireEvent(FireBullet(pos.x,pos.y,1,2,"bomb"))
 	end
 end

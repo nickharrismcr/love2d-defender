@@ -13,7 +13,7 @@ function state:enter(game,world,entity,dt)
 	eng:stopSystem("StarDrawSystem")
 	game.endt=game.t
 	local txtsys=eng:getSystem("TextSystem")
-	game.endtextid=txtsys:addString(550,300,1000,sf("GAME OVER PLAYER ONE",gl.level))
+	game.endtextid=txtsys:addString(gl.ww/2,gl.wh/2,1000,sf("GAME OVER PLAYER ONE",gl.level),"center")
 end
 
 function state:update (game,world,entity,dt)

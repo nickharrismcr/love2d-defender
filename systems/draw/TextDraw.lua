@@ -32,6 +32,7 @@ function TextDrawSystem:draw()
 	love.graphics.line(self.radar_win_start,3,self.radar_win_start+self.radar_win_width,3)
 	love.graphics.line(self.radar_win_start,self.rr.y2+5,self.radar_win_start+self.radar_win_width,self.rr.y2+5)
 	love.graphics.setLineWidth(1)
+
 end
 function TextDrawSystem:Do(move,draw)
 
