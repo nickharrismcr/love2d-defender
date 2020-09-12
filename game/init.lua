@@ -15,7 +15,7 @@ WORLD_INACTIVE=2
 function initialise()
 
 	log.outfile=sf("logs/defender.%s.log",os.date("%d%m%y%H%M%S"))
-	log.level="trace"
+	log.level="error"
 
 	-- debug
 	gl.debug = false
@@ -34,6 +34,44 @@ function initialise()
 		love.window.setMode(0,0,{vsync=0,fullscreen=true})
 	end
     love.mouse.setVisible(false)
+
+	local pixelcode = [[
+		# pragma language glsl3
+
+		vec4 effect( vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords )
+		{
+			float blur_radius=1/love_ScreenSize.x;
+	        vec2 offx = vec2(blur_radius, 0.0);
+    		vec2 offy = vec2(0.0, blur_radius);
+
+			vec4 texcolor = Texel(tex, texture_coords);
+
+
+    		vec4 pixel = Texel(tex,texture_coords - offx) * 3.0 +
+		                 Texel(tex,texture_coords + offx)* 3.0 +
+		                 Texel(tex,texture_coords - offy) * 3.0 +
+		                 Texel(tex,texture_coords + offy) * 3.0 +
+		                 Texel(tex,texture_coords - offx - offy)  +
+		                 Texel(tex,texture_coords - offx + offy)  +
+		                 Texel(tex,texture_coords + offx - offy)  +
+		                 Texel(tex,texture_coords + offx + offy) ;
+
+			texcolor=mix(texcolor,pixel,0.05);
+	        texcolor *= 0.6+0.3*sin( screen_coords.y*4);
+			
+			return color * texcolor;
+		}
+	]]
+	 
+	local vertexcode = [[
+		vec4 position( mat4 transform_projection, vec4 vertex_position )
+		{
+			return transform_projection * vertex_position;
+		}
+	]]
+	 
+	shader = love.graphics.newShader(pixelcode, vertexcode)
+	love.graphics.setShader(shader)
 
 	-- constants
 	gl.pixsize=3

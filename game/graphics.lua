@@ -305,7 +305,7 @@ function Graphics:initialize()
 	self:addSprites()
 
 	local function pixelmap(x,y,r,g,b,a)
-		if g<0.1 then a=0 else a=1; r=1; g=1; b=1 end
+		if g<0.1 then a=0;r=0;g=0;b=0 else a=1; r=1; g=1; b=1 end
 		return r,g,b,a
 	end
 
