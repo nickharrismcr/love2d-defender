@@ -7,7 +7,7 @@ function state:enter(ai,world,entity,dt)
 	entity:addMultipleTags({"Shootable","Deadly"})
 	local pos=entity:get("Position")
 	pos.x=randf(500,1500)
-	pos.y=randf(gl.top,gl.wh-300)
+	pos.y=randf(gl.top,gl.wh-200)
 	pos.dx=100
 	pos.dy=100
 end

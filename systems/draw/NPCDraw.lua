@@ -7,7 +7,7 @@ local cycle=getColorCycleFactory(30)
 
 function NPCDrawSystem:draw(dt)
 
-	local cycle_col=cycle()
+	local cycle_col=cycle(love.timer.getDelta())
 
 	for index, value in pairs(self.targets) do
 
@@ -29,7 +29,7 @@ function NPCDrawSystem:draw(dt)
 			end
 			if translate > - 100 and translate < gl.ww + 100 then
 				if gl.npc_debug then 
-					self.debugDraw(value,ai,translate,pos)
+					self:debugDraw(value,ai,translate,pos)
 				end
 				draw.on_screen=true
 				local col
@@ -39,7 +39,7 @@ function NPCDrawSystem:draw(dt)
 				pixeldraw_disperse(translate ,pos.y,g,draw.currframe, draw.disperse,draw.pixsize,col)
 			end
 
-			draw.t=draw.t+1
+			draw.t=draw.t+600*love.timer.getDelta()
 			if draw.t > draw.ticks and draw.frames > 1 and draw.disperse == 1 then
 				draw.t = 0
 				if draw.currframe == draw.frames then

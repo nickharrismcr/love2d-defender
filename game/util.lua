@@ -23,9 +23,10 @@ function getColorCycleFactory(frames)
 	local db=0
 	local tc=frames
 
-	function _closure()
+	function _closure(dt)
 
-		tc=tc+1
+		tc=tc+420*dt
+		gl.db1=tc
 		col.r=col.r+dr
 		col.g=col.g+dg
 		col.b=col.b+db
@@ -33,9 +34,9 @@ function getColorCycleFactory(frames)
 			tc=0
 			nextcol=col_list[(ind+1)%4+1]	
 			ind=ind+1
-			dr=(nextcol.r-col.r)/frames
-			dg=(nextcol.g-col.g)/frames
-			db=(nextcol.b-col.b)/frames
+			dr=2*(nextcol.r-col.r)/frames
+			dg=2*(nextcol.g-col.g)/frames
+			db=2*(nextcol.b-col.b)/frames
 		end
 		return col
 	end
@@ -149,7 +150,7 @@ end
 ---------------------------------------------------------------------------
 function get_box(graphic)  -- x1,y1,x2,y2
 
-	return { -graphic.xpixels*5/2, -graphic.ypixels*5/2, graphic.xpixels*5/2, graphic.ypixels*5/2 } 
+	return { -graphic.xpixels*gl.pixsize/2, -graphic.ypixels*gl.pixsize/2, graphic.xpixels*gl.pixsize/2, graphic.ypixels*gl.pixsize/2 } 
 end
 ---------------------------------------------------------------------------
 function box_collision( box1,box2,offset1)

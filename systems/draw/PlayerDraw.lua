@@ -1,7 +1,5 @@
 require "game/util"
 
-local pixsize=5
-
 local PlayerDrawSystem = class("PlayerDrawSystem", System)
 
 local flashcols={{1,1,1,1},{1,0,0,1}}
@@ -45,11 +43,11 @@ function PlayerDrawSystem:draw(dt)
 			override_col = flashcols[draw.flash]
 		end
 
-		self:DoDraw(pixsize,translate ,pos.y,g , g.frame, draw.disperse, ai.dir, override_col)
+		self:DoDraw(gl.pixsize,translate ,pos.y,g , g.frame, draw.disperse, ai.dir, override_col)
 		self:DoDrawRadar(ai,pos)
 
 		if ai.thrust then
-			self:DoDraw(pixsize/1.5,translate-(50*ai.dir) , pos.y+5 , tg , tg.frame, 1, ai.dir)
+			self:DoDraw(gl.pixsize/1.5,translate-(30*ai.dir) , pos.y+5 , tg , tg.frame, 1, ai.dir)
 		end
 
 		draw.t1=draw.t1+1
@@ -73,10 +71,10 @@ function PlayerDrawSystem:draw(dt)
 		end
 
 		for i = 1, math.min(7,gl.lives) do
-			self:DoDraw(3,i*50,80 ,g , g.frame, 1, 1 )
+			self:DoDraw(2,i*40,80 ,g , g.frame, 1, 1 )
 		end
 		for i = 1, math.min(7,gl.bombs) do
-			self:DoDraw(3,380,i*15,bg ,g.frame, 1, 1 )
+			self:DoDraw(3,gl.radar_rect.x1-20,i*15,bg ,g.frame, 1, 1 )
 		end
 
 	end

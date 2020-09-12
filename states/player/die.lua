@@ -8,6 +8,7 @@ function state:enter(co,world,entity,dt)
 	d.flash=1
 	co.timer=2
 	co.thrust=false
+	co.speed=0
 	gl.freeze=true
 	entity.eventManager:fireEvent(PlayerDie())
 	gl.lives=gl.lives-1

@@ -1,7 +1,6 @@
 
 require "game/util"
 
-local pixsize=5
 local ParticleDrawSystem = class("ParticleDrawSystem", System)
 
 function ParticleDrawSystem:draw(dt)

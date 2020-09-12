@@ -11,7 +11,7 @@ end
 function state:update (component,world,entity,dt)
 
 	d=entity:get("NPCDraw")
-	d.disperse = d.disperse - 0.08
+	d.disperse = d.disperse - dt *40
 	if d.disperse <= 1 then
 		d.disperse = 1
 		component.fsm:setState("search")

@@ -24,23 +24,23 @@ function state:update (co,world,entity,dt)
 	local pos=entity:get("Position")
 	if keys:isDown("up") then
 		if pos.y > gl.top then 
-			pos.y = pos.y - 1
+			pos.y = pos.y - 300*dt
 		end
 	end 
 	if keys:isDown("down") then
 		if pos.y < gl.wh - 50 then 
-			pos.y = pos.y + 1
+			pos.y = pos.y + 300*dt
 		end
 	end 
 	if keys:isDown("thrust") then 
 		co.thrust=true
 		if co.speed < co.maxspeed then
-			co.speed=co.speed+2
+			co.speed=co.speed+600*dt
 		end
 	else
 		co.thrust=false
 		if co.speed > 0 then
-			co.speed=co.speed-1
+			co.speed=co.speed-400*dt
 		end
 	end
 

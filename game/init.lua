@@ -30,13 +30,14 @@ function initialise()
 	gl.db4=nil
 
 	if gl.debug then
-		love.window.setMode(1000,800,{vsync=0,fullscreen=false})
+		love.window.setMode(1000,500,{vsync=0,fullscreen=false})
 	else
 		love.window.setMode(0,0,{vsync=0,fullscreen=true})
 	end
     love.mouse.setVisible(false)
 
 	-- constants
+	gl.pixsize=3
 	gl.wh=love.graphics.getPixelHeight()
 	gl.ww=love.graphics.getPixelWidth()
 	gl.radar_rect={x1=gl.ww/4,y1=0,x2=gl.ww*0.75,y2=gl.wh/8}
@@ -77,6 +78,7 @@ function initialise()
 		gl.humans=2
 		gl.level_waves=1
 		gl.lives=1
+		gl.nodie=true
 	end
 
 

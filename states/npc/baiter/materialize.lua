@@ -15,7 +15,7 @@ function state:update (ai,world,entity,dt)
 	local pos=entity:get("Position")
 	pos.x=gl.player_pos.x + ai.x_to_player
 	d=entity:get("NPCDraw")
-	d.disperse = d.disperse - 0.08
+	d.disperse = d.disperse - 60 * dt
 	if d.disperse <= 1 then
 		d.disperse = 1
 		ai.fsm:setState("chase")
