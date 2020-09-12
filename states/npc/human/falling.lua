@@ -1,0 +1,29 @@
+local state={}
+
+require "game/util"
+require "events/HumanLanded"
+
+function state:enter(ai,world,entity,dt)
+
+	local pos=entity:get("Position")
+	pos.dy = 0
+	ai.sy = pos.y
+	entity:addTag("CollidePlayer")
+end
+function state:update (ai,world,entity,dt)
+
+	local pos=entity:get("Position")
+	pos.dy = pos.dy + 0.5
+	pos.y = pos.y + pos.dy * dt
+	if pos.y >  world:at(pos.x) then
+		if ai.sy < gl.wh/2 then
+			ai.fsm:setState("die")
+		else
+			entity.eventManager:fireEvent(HumanLanded(entity))
+			entity:remove("CollidePlayer")
+			ai.fsm:setState("walking")
+		end
+	end
+end
+
+return state
