@@ -28,9 +28,13 @@ function pixeldraw_disperse(x,y,graphic,frame,disperse,pixsize,col)
 			end
 			local xx = x + disperse * (ps*i-sw/2)
 			local yy = y + disperse * (ps*j-sh/2)
-			dbg(r)
 			love.graphics.setColor(r,g,b,a)
 			love.graphics.rectangle("fill",xx,yy,pix,pix)
+			if a > 0 then
+				love.graphics.setColor(r,g,b,0.05)
+				love.graphics.rectangle("fill",xx-pix,yy-pix,pix*2,pix*2)
+				love.graphics.rectangle("fill",xx-pix,yy-pix,pix*4,pix*4)
+			end
 		end
 	end
 end

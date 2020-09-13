@@ -108,6 +108,11 @@ function PlayerDrawSystem:DoDraw(pixsize,x,y,graphic,frame,disperse,dir,override
 			local yy = y + disperse * (ps*j-sh/2)
 			love.graphics.setColor(r,g,b,a)
 			love.graphics.rectangle("fill",xx,yy,ps,ps)
+			if a > 0 then
+				love.graphics.setColor(r,g,b,0.05)
+				love.graphics.rectangle("fill",xx-ps,yy-ps,ps*2,ps*2)
+				love.graphics.rectangle("fill",xx-ps,yy-ps,ps*4,ps*4)
+			end
 		end
 	end
 end

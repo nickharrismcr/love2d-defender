@@ -24,14 +24,16 @@ end
 ---------------------------------------------------------------------------
 function love.draw()
 
-	love.graphics.setCanvas()
+	love.graphics.setCanvas(gl.canvas)
 	local col=gl.clearcol
-	love.graphics.clear(col.r,col.g,col.b)
 	gl.effect(function()
+		love.graphics.clear(col.r,col.g,col.b)
 		engine:draw()	
 	end)
 
+	love.graphics.setCanvas()
 	love.graphics.setColor(1,1,1,1)
+	love.graphics.draw(gl.canvas,0,0)
 	love.graphics.print(sf("%4.1f",love.timer.getFPS()),100,100)
 
 	if gl.db1 then 
@@ -46,6 +48,7 @@ function love.draw()
 	if gl.db4 then 
 		love.graphics.print(sf("%d",gl.db4),100,210)
 	end
+	love.timer.sleep(1/70)
 end
 ---------------------------------------------------------------------------
 function love.keypressed(key, scancode, isrepeat)

@@ -23,12 +23,15 @@ function LaserDrawSystem:draw(dt)
 			local c=ai.color
 			love.graphics.setColor(c.r,c.g,c.b,1)
 			love.graphics.rectangle("fill",translate,pos.y,ai.len,2)
+			love.graphics.setColor(c.r,c.g,c.b,0.2)
+			love.graphics.rectangle("fill",translate,pos.y-2,ai.len,4)
+			love.graphics.rectangle("fill",translate,pos.y-4,ai.len,8)
 
 			love.graphics.setColor(0,0,0,1)
 			for i=1,20,2 do
 				local xs=ai.gaps[i]
 				local xw=ai.gaps[i+1]
-				love.graphics.rectangle("fill",translate+xs,pos.y,xw,2)
+				love.graphics.rectangle("fill",translate+xs,pos.y-4,xw,8)
 				if (math.floor(ai.alive*100))%10 == 0 then
 					ai.gaps[i]=randf(0,ai.len)
 					ai.gaps[i+1]=randf(2,15)

@@ -49,6 +49,9 @@ function WorldDrawSystem:DoDraw(points,offset)
 			local x=i
 			love.graphics.setColor(1,0.5,0)
 			love.graphics.rectangle("fill",x,y,s,s)
+			love.graphics.setColor(1,0.5,0,0.05)
+			love.graphics.rectangle("fill",x-s,y-s,s*2,s*2)
+			love.graphics.rectangle("fill",x-s*2,y-s*2,s*4,s*4)
 		end
 	end
 end

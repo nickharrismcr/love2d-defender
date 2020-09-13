@@ -31,10 +31,10 @@ function initialise()
 	if gl.debug then
 		love.window.setMode(1000,500,{vsync=0,fullscreen=false})
 	else
-		love.window.setMode(0,0,{vsync=0,fullscreen=true})
+		love.window.setMode(0,0,{vsync=1,fullscreen=true})
 	end
     love.mouse.setVisible(false)
-
+	gl.canvas=love.graphics.newCanvas(gl.ww,gl.wh)
 
 	-- constants
 	gl.pixsize=3
@@ -82,12 +82,15 @@ function initialise()
 		gl.nodie=true
 	end
 
-	local moonshine=require("moonshine")
+	local moonshine=require("lib.moonshine")
 	gl.effect=moonshine(moonshine.effects.scanlines)
 	gl.effect.chain(moonshine.effects.crt)
+	gl.effect.chain(moonshine.effects.chromasep)
 	gl.effect.crt.distortionFactor={1.03,1.03}
 	gl.effect.scanlines.width=2
 	gl.effect.scanlines.opacity=0.7
+	gl.effect.chromasep.angle=0.5
+	gl.effect.chromasep.radius=2
 
 	local AISystem = require ('systems/update/AI')
 	local PositionSystem = require ('systems/update/Position')
