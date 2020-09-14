@@ -18,6 +18,7 @@ function EventManager:addListener(eventName, listener, listenerFunction)
         self.eventListeners[eventName] = {}
     end
 
+	log.trace(sf("%s %s %s ",eventName,listener,listenerFunction))
     if not listener.class or (listener.class and not listener.class.name) then
         HooECS.debug('Eventmanager: The listener has to implement a listener.class.name field.')
     end

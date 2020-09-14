@@ -1,3 +1,5 @@
+require "events/AddLanders"
+
 local state={}
 
 function state:enter(component,world,entity,dt)
@@ -6,6 +8,7 @@ function state:enter(component,world,entity,dt)
 	d.disperse=50
 	local pos=entity:get("Position")
 	pos.y = pos.iy
+	entity.eventManager:fireEvent(AddLanders())
 end
 
 function state:update (component,world,entity,dt)

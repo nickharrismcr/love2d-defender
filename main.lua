@@ -34,6 +34,22 @@ function love.draw()
 	love.graphics.setCanvas()
 	love.graphics.setColor(1,1,1,1)
 	love.graphics.draw(gl.canvas,0,0)
+
+	debug_draw()
+end
+---------------------------------------------------------------------------
+function love.keypressed(key, scancode, isrepeat)
+   if key == "escape" then love.event.quit() end
+   if key == "tab" then 
+	  if gl.freeze then gl.freeze = false else gl.freeze = true end
+   end
+   if key == "1" then 
+	  gl.debug=true 
+   end
+end
+---------------------------------------------------------------------------
+function debug_draw()
+
 	love.graphics.print(sf("%4.1f",love.timer.getFPS()),100,100)
 
 	if gl.db1 then 
@@ -48,16 +64,4 @@ function love.draw()
 	if gl.db4 then 
 		love.graphics.print(sf("%d",gl.db4),100,210)
 	end
-	love.timer.sleep(1/70)
 end
----------------------------------------------------------------------------
-function love.keypressed(key, scancode, isrepeat)
-   if key == "escape" then love.event.quit() end
-   if key == "tab" then 
-	  if gl.freeze then gl.freeze = false else gl.freeze = true end
-   end
-   if key == "1" then 
-	  gl.debug=true 
-   end
-end
----------------------------------------------------------------------------
