@@ -1,0 +1,16 @@
+*.swp
+*.log
+lib/HooECS/.editorconfig
+lib/HooECS/.gitattributes
+lib/HooECS/.gitignore
+lib/HooECS/.travis.yml
+lib/HooECS/CHANGELOG.md
+lib/HooECS/LICENSE.md
+lib/HooECS/Makefile
+lib/HooECS/README.md
+lib/HooECS/hooecs-0.0.1-1.rockspec
+lib/HooECS/hooecs-0.0.1-1.src.rock
+lib/HooECS/logo.svg
+lib/HooECS/logo_small.svg
+lib/HooECS/src/0
+setenv
