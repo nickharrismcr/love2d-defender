@@ -15,7 +15,6 @@ end
 function AISystem:update(dt)
 
 	for index, entity in pairs(self.targets) do
-
 		local ai=entity:get("AI") 
 		local world=entity:get("World")
 		ai.fsm:update(ai,world,entity,dt)
@@ -35,8 +34,23 @@ function AISystem:mutateAll(event)
 	end
 end 
 
-function AISystem:collideEvent(event)
+function AISystem:resetEvent()
 
+	for index, entity in pairs(self.targets) do
+		local ai=entity:get("AI") 
+		if entity.name=="Human" and ai.fsm.state ~= "walking" then
+			ai.fsm:setState("walking")
+		end
+		if entity.name=="Lander" then
+			if ai.fsm.state == "grabbing" or ai.fsm.state == "grabbed" then
+				ai.fsm:setState("search")
+				if ai.human then ai.human = nil end
+			end
+		end
+	end
+end
+
+function AISystem:collideEvent(event)
 
 	local pos=event.entity:get("Position")
 	local draw=event.entity:get("NPCDraw")

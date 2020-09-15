@@ -14,11 +14,11 @@ WORLD_INACTIVE=2
 
 function initialise()
 
-	log.outfile=sf("logs/defender.%s.log",os.date("%d%m%y%H%M%S"))
-	log.level="trace"
+	--log.outfile=sf("logs/defender.%s.log",os.date("%d%m%y%H%M%S"))
+	log.level="error"
 
 	-- debug
-	gl.debug = true    
+	gl.debug = false 
 	gl.nodie= false
 	gl.npc_debug=false
 	gl.freeze=false 
@@ -198,6 +198,7 @@ function initialise()
 	engine.eventManager:addListener("PlayerFire",lasermgr, lasermgr.fireEvent)
 	engine.eventManager:addListener("PlayerFire",gl.sound,gl.sound.play_func(gl.sound,"laser"))
 	engine.eventManager:addListener("PlayerExplode",engine,engine.stopAI)
+	engine.eventManager:addListener("PlayerExplode",ai_sys,ai_sys.resetEvent)
 	engine.eventManager:addListener("PlayerExplode",particle_sys,particle_sys.fireEvent)
 	engine.eventManager:addListener("PlayerExplode",gl.sound,gl.sound.play_func(gl.sound,"die"))
 	engine.eventManager:addListener("PlayerDie",bulletmgr,bulletmgr.stopAllEvent)

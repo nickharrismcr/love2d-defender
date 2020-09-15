@@ -209,6 +209,7 @@ local mixins = {
 		human_states:addTransition( "grabbed", "falling")
 		human_states:addTransition( "grabbed", "die")
 		human_states:addTransition( "grabbed", "eaten")
+		human_states:addTransition( "grabbed", "walking")
 		human_states:addTransition( "falling", "walking")
 		human_states:addTransition( "falling", "rescued")
 		human_states:addTransition( "falling", "die")

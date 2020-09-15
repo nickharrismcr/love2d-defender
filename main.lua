@@ -34,7 +34,7 @@ function love.draw()
 	love.graphics.setColor(1,1,1,1)
 	love.graphics.draw(gl.canvas,0,0)
 
-	debug_draw()
+	--debug_draw()
 end
 ---------------------------------------------------------------------------
 function love.keypressed(key, scancode, isrepeat)
