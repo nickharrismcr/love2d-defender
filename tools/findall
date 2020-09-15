@@ -1,0 +1,2 @@
+#! /usr/bin/env bash
+find *|grep lua | xargs grep $1 2>/dev/null

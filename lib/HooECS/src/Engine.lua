@@ -236,6 +236,7 @@ end
 function Engine:stopSystem(name)
     if self.systemRegistry[name] then
         self.systemRegistry[name].active = false
+		log.trace(sf("System %s stopped ",name))
     else
         HooECS.debug("Engine: Trying to stop not existing System: " .. name)
     end
@@ -244,6 +245,7 @@ end
 function Engine:startSystem(name)
     if self.systemRegistry[name] then
         self.systemRegistry[name].active = true
+		log.trace(sf("System %s started",name))
     else
         HooECS.debug("Engine: Trying to start not existing System: " .. name)
     end

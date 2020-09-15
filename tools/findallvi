@@ -1,0 +1,6 @@
+#! /usr/bin/env bash
+for file in `find *|grep lua$ | xargs grep $1 2>/dev/null|cut -d":" -f1|sort -u`
+do
+	echo $file
+	vi $file
+done

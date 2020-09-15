@@ -38,6 +38,9 @@ function state:update (ai,world,entity,dt)
 	if coin(4*gl.bullet_rate*dt) and draw.on_screen then
 		entity.eventManager:fireEvent(FireBullet(pos.x,pos.y,1,2,"mini"))
 	end
+	if draw.on_screen then
+		gl.sound:playIfNot("swarmer")
+	end
 end
 
 

@@ -5,6 +5,7 @@ require "game/util"
 function state:enter(game,world,entity,dt)
 
 	local eng=gl.engine
+	eng:stopSystem("AISystem")
 	eng:stopSystem("NPCDrawSystem")
 	eng:stopSystem("PlayerSystem")
 	eng:stopSystem("PlayerDrawSystem")
@@ -13,7 +14,7 @@ function state:enter(game,world,entity,dt)
 	eng:stopSystem("StarDrawSystem")
 	game.endt=game.t
 	local txtsys=eng:getSystem("TextSystem")
-	game.endtextid=txtsys:addString(gl.ww/2,gl.wh/2,1000,sf("GAME OVER PLAYER ONE",gl.level),"center")
+	game.endtextid=txtsys:addString(gl.ww/2,gl.wh/2,5000,sf("GAME OVER PLAYER ONE",gl.level),"center")
 end
 
 function state:update (game,world,entity,dt)

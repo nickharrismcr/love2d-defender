@@ -19,7 +19,6 @@ function love.update(dt)
 
 	engine.camera:update(dt)
 	engine:update(dt)
-	log.flush()
 end
 ---------------------------------------------------------------------------
 function love.draw()
@@ -53,15 +52,15 @@ function debug_draw()
 	love.graphics.print(sf("%4.1f",love.timer.getFPS()),100,100)
 
 	if gl.db1 then 
-		love.graphics.print(sf("%d",gl.db1),100,150)
+		love.graphics.print(sf("%s",gl.db1),100,150)
 	end
 	if gl.db2 then 
-		love.graphics.print(sf("%d",gl.db2),100,170)
+		love.graphics.print(sf("%s",gl.db2),100,170)
 	end
 	if gl.db3 then 
-		love.graphics.print(sf("%d",gl.db3),100,190)
+		love.graphics.print(sf("%s",gl.db3),100,190)
 	end
 	if gl.db4 then 
-		love.graphics.print(sf("%d",gl.db4),100,210)
+		love.graphics.print(sf("%s",gl.db4),100,210)
 	end
 end

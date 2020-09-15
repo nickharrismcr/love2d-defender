@@ -50,6 +50,11 @@ function GameSystem:checkCountsEvent(event)
 			gl.flash=48
 			gl.worldstatus = WORLD_EXPLODING
 			entity.eventManager:fireEvent(WorldExplode())
+			local f = function() gl.sound:playMultiple("die") end
+			f()
+			for i=0.5,3,0.25 do
+				gl.engine:schedule{f,i,"time"}
+			end
 		end
 	end
 
@@ -57,6 +62,22 @@ function GameSystem:checkCountsEvent(event)
 	local s=self.engine:getSystem("TextSystem")
 	s:updateString(gl.score_id, sf("%07d",gl.score))
 end
+
+function GameSystem:forwardSoundEvent(event)
+
+	if event.name=="NPCKill" then
+		if event.entity.name=="Lander" then
+			gl.sound:play("landerdie")
+		end
+		if event.entity.name=="Bomber" then
+			gl.sound:play("bomberdie")
+		end
+		if event.entity.name=="Baiter" then
+			gl.sound:play("baiterdie")
+		end
+	end
+end
+
 function GameSystem:updateScoreEvent(event)
 
 	if event.name=="NPCKill" then

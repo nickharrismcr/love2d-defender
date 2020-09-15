@@ -12,11 +12,11 @@ function state:enter(co,world,entity,dt)
 	co.speed=0    
 	co.dir=1
 	co.offset=300
-	entity.eventManager:fireEvent(PlayerStart())
 	d=entity:get("PlayerDraw")
 	d.flash=0
 	d.hide=false
 	co.thrust=false
+	entity.eventManager:fireEvent(PlayerStart())
 end
 
 function state:update (co,world,entity,dt)
@@ -33,12 +33,16 @@ function state:update (co,world,entity,dt)
 		end
 	end 
 	if keys:isDown("thrust") then 
+		if co.thrust == false then
+			gl.sound:play("thruster")
+		end
 		co.thrust=true
 		if co.speed < co.maxspeed then
 			co.speed=co.speed+600*dt
 		end
 	else
 		co.thrust=false
+		gl.sound:stop("thruster")
 		if co.speed > 0 then
 			co.speed=co.speed-400*dt
 		end

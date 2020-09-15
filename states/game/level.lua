@@ -1,9 +1,11 @@
 local state={}
 require "game/util"
+require "events/LevelStart"
 
 function state:enter(game,world,entity,dt)
 
-	log.trace("level enter")
+	entity.eventManager:fireEvent(LevelStart())
+
 	local eng=gl.engine
 	eng:startSystem("AISystem")
 	eng:startSystem("NPCDrawSystem")

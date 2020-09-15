@@ -2,6 +2,7 @@ local state={}
 
 require "game/util"
 require "events/HumanLanded"
+require "events/HumanDropped"
 
 function state:enter(ai,world,entity,dt)
 
@@ -9,6 +10,7 @@ function state:enter(ai,world,entity,dt)
 	pos.dy = 0
 	ai.sy = pos.y
 	entity:addTag("CollidePlayer")
+	entity.eventManager:fireEvent(HumanDropped())
 end
 function state:update (ai,world,entity,dt)
 

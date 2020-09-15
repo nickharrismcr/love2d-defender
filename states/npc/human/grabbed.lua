@@ -1,6 +1,11 @@
-local state={}
 require "game/util"
+require "events/HumanGrabbed"
 
+local state={}
+
+function state:enter(comp,world,entity,dt)
+	entity.eventManager:fireEvent(HumanGrabbed())
+end
 function state:update (comp,world,entity,dt)
 
 	local pos=entity:get("Position")

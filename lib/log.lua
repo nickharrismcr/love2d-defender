@@ -12,7 +12,6 @@ local log = { _version = "0.1.0" }
 log.usecolor = true
 log.outfile = nil
 log.level = "trace"
-log.buffer = true
 
 local modes = {
   { name = "trace", color = "\27[34m", },
@@ -79,25 +78,12 @@ for i, x in ipairs(modes) do
     if log.outfile then
       local str = string.format("[%-6s%s] %s: %s\n",
                                 nameupper, os.date(), lineinfo, msg)
-	  if log.buffer then
-		  table.insert(buffer,str)
-	  else
-		  local fp = io.open(log.outfile, "a")
-		  fp:write(str)
-		  fp:close()
-	  end
+	  local fp = io.open(log.outfile, "a")
+	  fp:write(str)
+	  fp:close()
     end
 
   end
-end
-
-log.flush = function()
-	if not log.buffer then return end
-    local fp = io.open(log.outfile, "a")
-    for i,v in ipairs(buffer) do
-		fp:write(v)
-	end
-    fp:close()
 end
 
 return log

@@ -1,6 +1,7 @@
 
 local state={}
 require "game/util"
+require "events/PlayerStart"
 
 -- dont set new states in enter functions!!!! will bypass enter function of new state
 -- TODO fix

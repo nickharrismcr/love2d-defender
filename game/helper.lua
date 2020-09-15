@@ -39,7 +39,7 @@ local mixins = {
 	end,
 
 	-- entry = function, delay, delay type
-	queue = function(self,entry)
+	schedule = function(self,entry)
 
 		if not self._queue then self._queue={} end
 		local ent={

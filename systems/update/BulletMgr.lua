@@ -37,6 +37,9 @@ function BulletMgr:fireEvent(event)
 	local life=3
 
 	if math.abs(event.x-ppos.x) < gl.ww or event.type_ == "bomb" then
+		if not (event.type_ == "bomb" or event.type_== "mini") then
+			gl.sound:play("bullet")
+		end
 		local dx,dy = calc_fire(ppos.x,ppos.y, ps, event.x, event.y, event.accuracy, time, love.timer.getDelta() ) 
 		local npcd=NPCDraw(g,60)
 		if event.type_=="bomb" then

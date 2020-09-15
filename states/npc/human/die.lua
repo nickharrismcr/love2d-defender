@@ -1,3 +1,5 @@
+require "events/HumanDie"
+
 local state={}
 
 function state:enter(component,world,entity,dt)
@@ -6,6 +8,7 @@ function state:enter(component,world,entity,dt)
 	if entity.parent:has("AI") then
 		entity.parent:get("AI").human=nil
 	end
+	entity.eventManager:fireEvent(HumanDie())
 
 end
 function state:update (component,world,entity,dt)

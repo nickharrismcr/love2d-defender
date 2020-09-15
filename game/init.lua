@@ -9,17 +9,17 @@ WORLD_INACTIVE=2
 --TODO
 --hyperspace
 --level end human count/score
---sound
 --attract mode
+--fix freeze on player die
 
 function initialise()
 
 	log.outfile=sf("logs/defender.%s.log",os.date("%d%m%y%H%M%S"))
-	log.level="error"
+	log.level="trace"
 
 	-- debug
-	gl.debug = false
-	gl.nodie= true 
+	gl.debug = true    
+	gl.nodie= false
 	gl.npc_debug=false
 	gl.freeze=false 
 	-- displays
@@ -77,9 +77,10 @@ function initialise()
 	if gl.debug then 
 		gl.landers=2
 		gl.humans=2
+		gl.pods=2
 		gl.level_waves=1
 		gl.lives=1
-		gl.nodie=true
+		--gl.nodie=true
 	end
 
 	local moonshine=require("lib.moonshine")
@@ -105,7 +106,7 @@ function initialise()
 	local LifeSystem = require ('systems/update/Life')
 	local CollideSystem = require ('systems/update/Collide')
 	local GameSystem = require ('systems/update/Game')
-	local QueueSystem = require ('systems/update/Queue')
+	local ScheduleSystem = require ('systems/update/Schedule')
 
 	local WorldDrawSystem = require ('systems/draw/WorldDraw')
 	local NPCDrawSystem = require ('systems/draw/NPCDraw')
@@ -120,22 +121,25 @@ function initialise()
 	SoundMgr = require ('game/sound_mgr')
 	gl.sound = SoundMgr()
 	gl.sound:load("background","assets/background.wav",true)
-	gl.sound:load("baiterdie","assets/baiterdie.wav",false)
-	gl.sound:load("bomberdie","assets/bomberdie.wav",false)
+	gl.sound:load("baiterdie","assets/baiterdie.wav",false,1)
+	gl.sound:load("bomberdie","assets/bomberdie.wav",false,1)
 	gl.sound:load("bullet","assets/bullet.wav",false)
 	gl.sound:load("caughthuman","assets/caughthuman.wav",false)
 	gl.sound:load("die","assets/die.wav",false)
 	gl.sound:load("dropping","assets/dropping.wav",false)
 	gl.sound:load("grabbed","assets/grabbed.wav",false)
 	gl.sound:load("humandie","assets/humandie.wav",false)
-	gl.sound:load("landerdie","assets/landerdie.wav",false)
-	gl.sound:load("laser","assets/laser.wav",false)
+	gl.sound:load("landerdie","assets/landerdie.wav",false,1)
+	gl.sound:load("laser","assets/laser.wav",false,1)
 	gl.sound:load("levelstart","assets/levelstart.wav",false)
-	gl.sound:load("materialise","assets/materialise.wav",false)
+	gl.sound:load("materialize","assets/materialise.wav",false)
 	gl.sound:load("mutant","assets/mutant.wav",false)
 	gl.sound:load("placehuman","assets/placehuman.wav",false)
-	gl.sound:load("start","assets/start.wav",false)
+	gl.sound:load("extralife","assets/start.wav",false)
 	gl.sound:load("thruster","assets/thruster.wav",true)
+	gl.sound:load("poddie","assets/poddie.wav",false)
+	gl.sound:load("swarmer","assets/swarmer.wav",false,1)
+	gl.sound:setVolume("thruster",0.3)
 
 	Engine:include(require ("game/helper"))
 	local engine = Engine()
@@ -161,7 +165,7 @@ function initialise()
 	engine:addSystem(particle_sys,"update")
 	engine:addSystem(LifeSystem(),"update")
 	engine:addSystem(CollideSystem(),"update")
-	engine:addSystem(QueueSystem(),"update")
+	engine:addSystem(ScheduleSystem(),"update")
 	engine:addSystem(game_sys,"update")
 
 	engine:addSystem(NPCDrawSystem(),"draw")
@@ -188,46 +192,54 @@ function initialise()
 	-- from player state
 	engine.eventManager:addListener("PlayerStart",engine,engine.startAI)
 	engine.eventManager:addListener("PlayerStart",game_sys,game_sys.playerStartEvent)
-	engine.eventManager:addListener("PlayerStart",gl.sound,gl.sound.play_func(gl.sound,"levelstart"))
-	engine.eventManager:addListener("PlayerStart",gl.sound,gl.sound.play_func(gl.sound,"background"))
-	engine.eventManager:addListener("AddLanders",gl.sound,gl.sound.play_func(gl.sound,"materialize"))
+	engine.eventManager:addListener("LevelStart",gl.sound,gl.sound.play_func(gl.sound,"levelstart"))
+	engine.eventManager:addListener("LevelStart",gl.sound,gl.sound.play_func(gl.sound,"background"))
+	engine.eventManager:addListener("Materialize",gl.sound,gl.sound.play_func(gl.sound,"materialize"))
 	engine.eventManager:addListener("PlayerFire",lasermgr, lasermgr.fireEvent)
 	engine.eventManager:addListener("PlayerFire",gl.sound,gl.sound.play_func(gl.sound,"laser"))
 	engine.eventManager:addListener("PlayerExplode",engine,engine.stopAI)
 	engine.eventManager:addListener("PlayerExplode",particle_sys,particle_sys.fireEvent)
+	engine.eventManager:addListener("PlayerExplode",gl.sound,gl.sound.play_func(gl.sound,"die"))
 	engine.eventManager:addListener("PlayerDie",bulletmgr,bulletmgr.stopAllEvent)
 	engine.eventManager:addListener("SmartBomb",ai_sys, ai_sys.smartBombEvent)
+	engine.eventManager:addListener("SmartBomb",gl.sound,gl.sound.play_func(gl.sound,"die"))
 	-- from collision
 	engine.eventManager:addListener("PlayerHit",player_sys, player_sys.killEvent)
 	engine.eventManager:addListener("PlayerCollide",player_sys, player_sys.playerCollide)
 	engine.eventManager:addListener("NPCCollide",ai_sys, ai_sys.collideEvent)
 	engine.eventManager:addListener("NPCKill",game_sys, game_sys.updateScoreEvent)
-	engine.eventManager:addListener("NPCKill",gl.sound,gl.sound.play_func(gl.sound,"landerdie"))
+	engine.eventManager:addListener("NPCKill",game_sys, game_sys.forwardSoundEvent)
 	engine.eventManager:addListener("NPCKill",game_sys, game_sys.checkCountsEvent)
 	engine.eventManager:addListener("HumanRescued",engine, engine.addScoreEvent)
 	engine.eventManager:addListener("HumanRescued",game_sys,game_sys.updateScoreEvent)
+	engine.eventManager:addListener("HumanRescued",gl.sound,gl.sound.play_func(gl.sound,"caughthuman"))
 	-- ???
 	engine.eventManager:addListener("WorldExplode",ai_sys, ai_sys.mutateAll)
 	-- from ai state
 	engine.eventManager:addListener("FireBullet",bulletmgr,bulletmgr.fireEvent)
-	engine.eventManager:addListener("FireBullet",gl.sound,gl.sound.play_func(gl.sound,"bullet"))
+	engine.eventManager:addListener("HumanGrabbed",gl.sound,gl.sound.play_func(gl.sound,"grabbed"))
+	engine.eventManager:addListener("HumanDropped",gl.sound,gl.sound.play_func(gl.sound,"dropping"))
+	engine.eventManager:addListener("HumanDie",gl.sound,gl.sound.play_func(gl.sound,"humandie"))
 	engine.eventManager:addListener("PodKill",engine,engine.addSwarmersEvent)
+	engine.eventManager:addListener("PodKill", gl.sound,gl.sound.play_func(gl.sound,"poddie"))
 	-- from human state
 	engine.eventManager:addListener("HumanSaved",engine, engine.addScoreEvent)
 	engine.eventManager:addListener("HumanSaved",game_sys,game_sys.updateScoreEvent)
+	engine.eventManager:addListener("HumanSaved",gl.sound,gl.sound.play_func(gl.sound,"placehuman"))
 	engine.eventManager:addListener("HumanLanded",game_sys,game_sys.updateScoreEvent)
 	engine.eventManager:addListener("HumanLanded",engine, engine.addScoreEvent)
+	engine.eventManager:addListener("HumanLanded",gl.sound,gl.sound.play_func(gl.sound,"caughthuman"))
 	-- from engine
-	engine.eventManager:addListener("ComponentRemoved",logger,logger.event)
-	engine.eventManager:addListener("EntityDeactivated",logger,logger.event)
+	--engine.eventManager:addListener("ComponentRemoved",logger,logger.event)
+	--engine.eventManager:addListener("EntityDeactivated",logger,logger.event)
 	------------------------------------------------------------------------
 	------------------------------------------------------------------------
 	
 	-- (debug) hook for collide system component remove
 	local cs=engine:getSystem("CollideSystem")
-	function cs:onRemoveEntity (entity,index)
-		log.trace(sf("system removed ent %s",tt(entity)))
-	end
+	--function cs:onRemoveEntity (entity,index)
+		--log.trace(sf("system removed ent %s",tt(entity)))
+	--end
 
 	engine:addParticles()
 	engine:addWorld()

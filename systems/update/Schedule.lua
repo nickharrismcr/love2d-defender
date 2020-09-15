@@ -1,9 +1,9 @@
 require "game/util"
 log=require "lib/log"
 
-local Queue = class("Queue", System)
+local Schedule = class("Schedule", System)
 
-function Queue:update(dt)
+function Schedule:update(dt)
 
 	if gl.engine._queue then
 		for i,entry in ipairs(gl.engine._queue) do
@@ -22,8 +22,8 @@ function Queue:update(dt)
 	end
 end
 
-function Queue:requires()
-	return {"Queue"}
+function Schedule:requires()
+	return {"Schedule"}
 end
 
-return Queue
+return Schedule

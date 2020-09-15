@@ -3,23 +3,33 @@ local SoundMgr = class("SoundMgr")
 function SoundMgr:initialize()
 
    self.sounds={}
+   self.groups={}
    self.mute=false
 
 end
     
-function SoundMgr:load(name, filename, looping)
+function SoundMgr:load(name, filename, looping, group)
         
-    local s=love.audio.newSource(filename,"static")
+    local s={love.audio.newSource(filename,"static"),0}
 	if looping then
-		s:setLooping(true)
+		s[1]:setLooping(true)
+	end
+	if group then
+		s[2]=group
+		if not self.groups[group] then
+			self.groups[group]={}
+		end
+		table.insert(self.groups[group],s)
 	end
 	self.sounds[name]=s
 end
 
-function SoundMgr:get(name)
+function SoundMgr:isPlaying(name)
 
-    return self.sounds[name]
-    
+	if self.sounds[name] then
+		return self.sounds[name]:isPlaying()
+	end
+	return false
 end
 
 function SoundMgr:play_func(name)
@@ -33,24 +43,62 @@ function SoundMgr:play_func(name)
 
 end
     
+function SoundMgr:setPitch(name,pitch)
+	local s=self.sounds[name]
+    if s then
+		s[1]:setPitch(pitch)
+	end
+end
+function SoundMgr:setVolume(name,volume)
+	local s=self.sounds[name]
+    if s then
+		s[1]:setVolume(volume)
+	end
+end
+
+-- play if not playing
+function SoundMgr:playIfNot(name)
+
+	local s=self.sounds[name]
+    if s then
+		if not s[1]:isPlaying() then
+			self:play(name)
+		end
+	end
+end
+
+-- force play 
+function SoundMgr:playMultiple(name)
+
+	local s=self.sounds[name]
+    if s then
+		s[1]:play()
+	end
+end
+
+-- restart if already playing
 function SoundMgr:play(name)
         
     if self.mute then return end
 
-    if self.sounds[name] then
-		if self.sounds[name]:isPlaying() then
-			self.sounds[name]:stop()
+	local s=self.sounds[name]
+    if s then
+		s[1]:stop()
+		if s[2] > 0 then
+			for i,v in ipairs(self.groups[s[2]]) do
+				v[1]:stop()
+			end
 		end
-        self.sounds[name]:play()
-		log.trace(sf("soundmanager : play %s ",name))
+        s[1]:play()
 	end   
 end           
 
 function SoundMgr:stop(name)
         
-    if self.sounds[name] then
-		if self.sounds[name]:isPlaying() then
-			self.sounds[name]:stop()
+	local s=self.sounds[name]
+    if s then
+		if s[1]:isPlaying() then
+			s[1]:stop()
    		end 
 	end
 end
@@ -58,7 +106,7 @@ end
 function SoundMgr:stopall()
     
 	for k,v in pairs(self.sounds) do
-        self:stop()
+        v[1]:stop()
 	end
 end
 

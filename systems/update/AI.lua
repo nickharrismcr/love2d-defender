@@ -65,8 +65,8 @@ function AISystem:smartBombEvent()
 			end
 		end
 	end
-	gl.engine:queue({bomb,3,"ticks"})
-	gl.engine:queue({bomb,10,"ticks"})
+	gl.engine:schedule({bomb,3,"ticks"})
+	gl.engine:schedule({bomb,10,"ticks"})
 end 
 
 

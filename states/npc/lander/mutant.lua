@@ -34,7 +34,9 @@ function state:update (comp,world,entity,dt)
 	if coin(0.006) and draw.on_screen then 
 		entity.eventManager:fireEvent(FireBullet(pos.x,pos.y))
 	end
-
+	if draw.on_screen then
+		gl.sound:playIfNot("mutant")
+	end
 end
 
 return state
