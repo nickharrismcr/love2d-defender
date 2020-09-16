@@ -1,35 +1,42 @@
 HooECS = require('lib/HooECS')
 HooECS.initialize({ debug=true,gl=true })
 
-require "game/init"
+require "game/initgame"
+require "game/intro"
+require "game/initeffect"
+
 dbg=require("lib/debugger")
 dbg.auto_where=15
 gl={}
 
 local engine
+local state
+local effect
 ---------------------------------------------------------------------------
 function love.load()
 
 	io.stdout:setvbuf('no')
 	math.randomseed(os.time())
-	engine=initialise(gl)
+	intro=Intro()
+	engine=init_game(gl)
+	effect=init_effect()
+	states={intro,engine}
+	gl.state=1
 end	
 ---------------------------------------------------------------------------
 function love.update(dt)
 
-	engine.camera:update(dt)
-	engine:update(dt)
+	states[gl.state]:update(dt)
 end
 ---------------------------------------------------------------------------
 function love.draw()
 
 	love.graphics.setCanvas(gl.canvas)
 	local col=gl.clearcol
-	gl.effect(function()
+	effect(function()
 		love.graphics.clear(col.r,col.g,col.b)
-		engine:draw()	
+		states[gl.state]:draw()	
 	end)
-
 	love.graphics.setCanvas()
 	love.graphics.setColor(1,1,1,1)
 	love.graphics.draw(gl.canvas,0,0)

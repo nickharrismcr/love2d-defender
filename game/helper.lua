@@ -316,6 +316,7 @@ local mixins = {
 		local FSM=require ("game/fsm")
 		local states=StateTree()
 		states:addStates("states/game",{ "level_start","level","level_finish","game_over" })
+		states:addTransition("intro","level_start")
 		states:addTransition("level_start","level")
 		states:addTransition("level","level_finish")
 		states:addTransition("level","game_over")

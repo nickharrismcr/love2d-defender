@@ -12,7 +12,7 @@ WORLD_INACTIVE=2
 --attract mode
 --fix freeze on player die
 
-function initialise()
+function init_game()
 
 	--log.outfile=sf("logs/defender.%s.log",os.date("%d%m%y%H%M%S"))
 	log.level="error"
@@ -83,15 +83,6 @@ function initialise()
 		--gl.nodie=true
 	end
 
-	local moonshine=require("lib.moonshine")
-	gl.effect=moonshine(moonshine.effects.scanlines)
-	gl.effect.chain(moonshine.effects.crt)
-	gl.effect.chain(moonshine.effects.chromasep)
-	gl.effect.crt.distortionFactor={1.03,1.03}
-	gl.effect.scanlines.width=2
-	gl.effect.scanlines.opacity=0.7
-	gl.effect.chromasep.angle=0.5
-	gl.effect.chromasep.radius=2
 
 	local AISystem = require ('systems/update/AI')
 	local PositionSystem = require ('systems/update/Position')

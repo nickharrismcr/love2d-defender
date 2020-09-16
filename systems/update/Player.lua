@@ -18,6 +18,8 @@ end
 
 function PlayerSystem:update(dt)
 
+	gl.engine.camera:update(dt)
+
 	for index, entity in pairs(self.targets) do
 		local ai=entity:get("Player") 
 		local pos=entity:get("Position") 

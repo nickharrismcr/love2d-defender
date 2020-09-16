@@ -13,6 +13,7 @@ function PlayerDraw:initialize(graphic,tgraphic,bgraphic,ticks,tticks)
 	self.disperse=1
 	self.flashtime=15
 	self.flashcounter=0
+	self.flash=0
 end
 
 return PlayerDraw
