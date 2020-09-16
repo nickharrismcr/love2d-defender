@@ -45,13 +45,10 @@ function love.draw()
 end
 ---------------------------------------------------------------------------
 function love.keypressed(key, scancode, isrepeat)
+
    if key == "escape" then love.event.quit() end
-   if key == "tab" then 
-	  if gl.freeze then gl.freeze = false else gl.freeze = true end
-   end
-   if key == "1" then 
-	  gl.debug=true 
-   end
+   if key == "space" and gl.state==1 then gl.state=2 end
+
 end
 ---------------------------------------------------------------------------
 function debug_draw()

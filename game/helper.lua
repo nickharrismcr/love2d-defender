@@ -16,6 +16,75 @@ local NPCRadarDraw=require("components/draw/NPCRadarDraw")
 local FSM=require("game/fsm")
 local StateTree=require("game/statetree")
 
+-----------------------------------------------------------------------------
+local lander_states = StateTree()
+lander_states:addStates( "states/npc/lander",{"wait","materialize", "search", "grabbing", "grabbed", "mutant","die" })
+lander_states:addTransition( "wait","materialize")
+lander_states:addTransition( "materialize", "search")
+lander_states:addTransition( "search", "grabbing")
+lander_states:addTransition( "search", "mutant")
+lander_states:addTransition( "search", "die")
+lander_states:addTransition( "grabbing", "grabbed")
+lander_states:addTransition( "grabbing", "die" )
+lander_states:addTransition( "grabbing", "search" ) 
+lander_states:addTransition( "grabbing", "mutant" ) 
+lander_states:addTransition( "grabbed", "die" )
+lander_states:addTransition( "grabbed", "mutant" )
+lander_states:addTransition( "grabbed", "search")
+lander_states:addTransition( "mutant", "die")
+local lander_g=gl.graphics:get("lander")
+local lander_rg=gl.graphics:get("r_lander")   --radar
+
+-----------------------------------------------------------------------------
+local swarmer_states = StateTree()
+swarmer_states:addStates( "states/npc/swarmer",{"chase", "die" })
+swarmer_states:addTransition( "chase", "die")
+local swarmer_g=gl.graphics:get("swarmer")
+local swarmer_rg=gl.graphics:get("r_swarmer")   --radar
+
+-----------------------------------------------------------------------------
+local pod_states = StateTree()
+pod_states:addStates( "states/npc/pod",{"drift", "die" })
+pod_states:addTransition( "drift", "die")
+local pod_g=gl.graphics:get("pod")
+local pod_rg=gl.graphics:get("r_pod")   --radar
+
+-----------------------------------------------------------------------------
+local bomber_states = StateTree()
+bomber_states:addStates( "states/npc/bomber",{"bomb", "die" })
+bomber_states:addTransition( "bomb", "die")
+local bomber_g=gl.graphics:get("bomber")
+local bomber_rg=gl.graphics:get("r_bomber")   --radar
+
+-----------------------------------------------------------------------------
+local baiter_states = StateTree()
+baiter_states:addStates( "states/npc/baiter",{"wait","materialize", "chase", "die" })
+baiter_states:addTransition( "wait","materialize")
+baiter_states:addTransition( "materialize", "chase")
+baiter_states:addTransition( "chase", "die")
+local baiter_g=gl.graphics:get("baiter")
+local baiter_rg=gl.graphics:get("r_baiter")   --radar
+
+-----------------------------------------------------------------------------
+local human_g=gl.graphics:get("human")
+local human_rg=gl.graphics:get("r_human")
+local human_states = StateTree()
+human_states:addStates( "states/npc/human",{ "walking", "picked", "grabbed", "falling","eaten","rescued", "die" })
+human_states:addTransition( "walking", "picked")
+human_states:addTransition( "walking", "die")
+human_states:addTransition( "picked", "grabbed")
+human_states:addTransition( "picked", "walking")
+human_states:addTransition( "picked", "die")
+human_states:addTransition( "grabbed", "falling")
+human_states:addTransition( "grabbed", "die")
+human_states:addTransition( "grabbed", "eaten")
+human_states:addTransition( "grabbed", "walking")
+human_states:addTransition( "falling", "walking")
+human_states:addTransition( "falling", "rescued")
+human_states:addTransition( "falling", "die")
+human_states:addTransition( "rescued", "walking")
+
+-----------------------------------------------------------------------------
 local mixins = {
 
 	levelSet = function(self)
@@ -53,13 +122,6 @@ local mixins = {
 	addSwarmersEvent = function(self,event)
 
 		for i = 1,gl.swarmers do
-			local swarmer_states = StateTree()
-			swarmer_states:addStates( "states/npc/swarmer",{"chase", "die" })
-			swarmer_states:addTransition( "chase", "die")
-
-			local swarmer_g=gl.graphics:get("swarmer")
-			local swarmer_rg=gl.graphics:get("r_swarmer")   --radar
-
 			local entity=Entity(nil,"Swarmer")
 			entity:add(Position(event.x,event.y))
 			entity:add(AI(FSM("Swarmer",swarmer_states,"chase")))
@@ -79,12 +141,6 @@ local mixins = {
 	addPods = function(self) 
 
 		for i = 1,gl.pods do
-			local pod_states = StateTree()
-			pod_states:addStates( "states/npc/pod",{"drift", "die" })
-			pod_states:addTransition( "drift", "die")
-
-			local pod_g=gl.graphics:get("pod")
-			local pod_rg=gl.graphics:get("r_pod")   --radar
 
 			local entity=Entity(nil,"Pod")
 			local x=gl.player_pos.x+randf(0,1000)
@@ -105,13 +161,6 @@ local mixins = {
 	addBombers = function(self)
 
 		for i = 1,gl.bombers do
-			local bomber_states = StateTree()
-			bomber_states:addStates( "states/npc/bomber",{"bomb", "die" })
-			bomber_states:addTransition( "bomb", "die")
-
-			local bomber_g=gl.graphics:get("bomber")
-			local bomber_rg=gl.graphics:get("r_bomber")   --radar
-
 			local entity=Entity(nil,"Bomber")
 			entity:add(Position(0,0))
 			entity:add(AI(FSM("Bomber",bomber_states,"bomb",4),2))
@@ -129,15 +178,6 @@ local mixins = {
 
 	addBaiter = function(self) 
 
-		local baiter_states = StateTree()
-		baiter_states:addStates( "states/npc/baiter",{"wait","materialize", "chase", "die" })
-		baiter_states:addTransition( "wait","materialize")
-		baiter_states:addTransition( "materialize", "chase")
-		baiter_states:addTransition( "chase", "die")
-
-		local baiter_g=gl.graphics:get("baiter")
-		local baiter_rg=gl.graphics:get("r_baiter")   --radar
-
 		local entity=Entity(nil,"Baiter")
 		entity:add(Position(0,0))
 		entity:add(AI(FSM("Baiter",baiter_states,"wait",4),2))
@@ -154,29 +194,16 @@ local mixins = {
 
 	addLanders = function (self,number)
 
-		local lander_states = StateTree()
-		lander_states:addStates( "states/npc/lander",{"wait","materialize", "search", "grabbing", "grabbed", "mutant","die" })
-		lander_states:addTransition( "wait","materialize")
-		lander_states:addTransition( "materialize", "search")
-		lander_states:addTransition( "search", "grabbing")
-		lander_states:addTransition( "search", "mutant")
-		lander_states:addTransition( "search", "die")
-		lander_states:addTransition( "grabbing", "grabbed")
-		lander_states:addTransition( "grabbing", "die" )
-		lander_states:addTransition( "grabbing", "search" ) 
-		lander_states:addTransition( "grabbed", "die" )
-		lander_states:addTransition( "grabbed", "mutant" )
-		lander_states:addTransition( "grabbed", "search")
-		lander_states:addTransition( "mutant", "die")
-
-		local lander_g=gl.graphics:get("lander")
-		local lander_rg=gl.graphics:get("r_lander")   --radar
 
 		local function addit(x)
 			local entity=Entity(nil,"Lander")
 			local y =math.random(10,600)
 			entity:add(Position(x,y))
-			entity:add(AI(FSM("Lander",lander_states,"wait"),2))
+			local initstate="wait"
+			if gl.worldstatus == WORLD_EXPLODING then 
+				initstate="mutant"	
+			end
+			entity:add(AI(FSM("Lander",lander_states,initstate),2))
 			entity:add(NPCDraw(lander_g,130))
 			entity:add(NPCRadarDraw(lander_rg,130))
 			entity:add(self.camera)
@@ -196,24 +223,6 @@ local mixins = {
 
 	addHumans = function (self,number)
 
-		local human_g=gl.graphics:get("human")
-		local human_rg=gl.graphics:get("r_human")
-
-		local human_states = StateTree()
-		human_states:addStates( "states/npc/human",{ "walking", "picked", "grabbed", "falling","eaten","rescued", "die" })
-		human_states:addTransition( "walking", "picked")
-		human_states:addTransition( "walking", "die")
-		human_states:addTransition( "picked", "grabbed")
-		human_states:addTransition( "picked", "walking")
-		human_states:addTransition( "picked", "die")
-		human_states:addTransition( "grabbed", "falling")
-		human_states:addTransition( "grabbed", "die")
-		human_states:addTransition( "grabbed", "eaten")
-		human_states:addTransition( "grabbed", "walking")
-		human_states:addTransition( "falling", "walking")
-		human_states:addTransition( "falling", "rescued")
-		human_states:addTransition( "falling", "die")
-		human_states:addTransition( "rescued", "walking")
 
 		for i = 1, number do
 			local entity=Entity(nil,"Human")

@@ -1,4 +1,5 @@
 require "game/graphics"
+require ('game/sound_mgr')
 require "lib/log"
 
 WORLD_ACTIVE=0
@@ -18,7 +19,7 @@ function init_game()
 	log.level="error"
 
 	-- debug
-	gl.debug = false 
+	gl.debug = false
 	gl.nodie= false
 	gl.npc_debug=false
 	gl.freeze=false 
@@ -109,7 +110,6 @@ function init_game()
 	local StarDrawSystem = require ('systems/draw/StarDraw')
 
 	gl.graphics=Graphics()
-	SoundMgr = require ('game/sound_mgr')
 	gl.sound = SoundMgr()
 	gl.sound:load("background","assets/background.wav",true)
 	gl.sound:load("baiterdie","assets/baiterdie.wav",false,1)

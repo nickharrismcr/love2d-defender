@@ -1,4 +1,63 @@
-local SoundMgr = class("SoundMgr")
+Sound = class("Sound")
+
+function Sound:initialize(data,loop,group)
+
+	self.data=data
+	self.sources={love.audio.newSource(data)}
+	self.loop=false
+	if loop then  
+		self.loop=true
+		self.sources[1]:setLooping(true)
+	end
+	self.group = group or 0
+end
+
+function Sound:isPlaying()
+	for i,v in ipairs(self.sources) do
+		if v:isPlaying() then return true end
+	end
+	return false
+end
+
+function Sound:playOne()
+
+	for i,sound in ipairs(self.sources) do
+		sound:stop()
+	end
+	self.sources[1]:play()
+end
+
+function Sound:playMany()
+
+	for i,v in ipairs(self.sources) do
+		if (not v:isPlaying()) then
+			v:play()
+			return
+		end
+	end
+	table.insert(self.sources,love.audio.newSource(self.data))
+	self.sources[#self.sources]:setLooping(self.loop)
+	self.sources[#self.sources]:play()
+end
+
+function Sound:stop()
+
+	for i,sound in ipairs(self.sources) do
+		sound:stop()
+	end
+end
+
+function Sound:setVolume(volume)
+
+	for i,v in ipairs(self.sources) do
+		v:setVolume(volume)
+	end
+end
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+
+SoundMgr = class("SoundMgr")
     
 function SoundMgr:initialize()
 
@@ -10,18 +69,15 @@ end
     
 function SoundMgr:load(name, filename, looping, group)
         
-    local s={love.audio.newSource(filename,"static"),0}
-	if looping then
-		s[1]:setLooping(true)
-	end
+    local sdata=love.sound.newSoundData(filename)
+	local sound=Sound(sdata,looping,group)
 	if group then
-		s[2]=group
 		if not self.groups[group] then
 			self.groups[group]={}
 		end
-		table.insert(self.groups[group],s)
+		table.insert(self.groups[group],sound)
 	end
-	self.sounds[name]=s
+	self.sounds[name]=sound
 end
 
 function SoundMgr:isPlaying(name)
@@ -43,26 +99,21 @@ function SoundMgr:play_func(name)
 
 end
     
-function SoundMgr:setPitch(name,pitch)
-	local s=self.sounds[name]
-    if s then
-		s[1]:setPitch(pitch)
-	end
-end
 function SoundMgr:setVolume(name,volume)
 	local s=self.sounds[name]
     if s then
-		s[1]:setVolume(volume)
+		s:setVolume(volume)
 	end
 end
 
 -- play if not playing
 function SoundMgr:playIfNot(name)
 
+    if self.mute then return end
 	local s=self.sounds[name]
     if s then
-		if not s[1]:isPlaying() then
-			self:play(name)
+		if not s:isPlaying() then
+			s:playOne()
 		end
 	end
 end
@@ -70,48 +121,41 @@ end
 -- force play 
 function SoundMgr:playMultiple(name)
 
+    if self.mute then return end
 	local s=self.sounds[name]
     if s then
-		s[1]:play()
+		s:playMany()
 	end
 end
 
 -- restart if already playing
+-- stop other sounds in group
 function SoundMgr:play(name)
         
     if self.mute then return end
 
 	local s=self.sounds[name]
     if s then
-		s[1]:stop()
-		if s[2] > 0 then
-			for i,v in ipairs(self.groups[s[2]]) do
-				v[1]:stop()
+		if s.group > 0 then
+			for i,v in ipairs(self.groups[s.group]) do
+				v:stop()
 			end
 		end
-        s[1]:play()
+        s:playOne()
 	end   
 end           
 
 function SoundMgr:stop(name)
         
 	local s=self.sounds[name]
-    if s then
-		if s[1]:isPlaying() then
-			s[1]:stop()
-   		end 
-	end
+    if s then s:stop() end
 end
 
 function SoundMgr:stopall()
     
 	for k,v in pairs(self.sounds) do
-        v[1]:stop()
+        v:stop()
 	end
 end
 
             
-return SoundMgr            
-    
-       
-

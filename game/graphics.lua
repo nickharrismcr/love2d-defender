@@ -315,6 +315,10 @@ function Graphics:initialize()
 
 	--self:saveData()
 	--self:loadData()
+	self.williams=love.graphics.newImage("assets/williams.png")
+	self.presents=love.graphics.newImage("assets/presents.png")
+	self.title=love.graphics.newImage("assets/title.png")
+	self.hititle=love.graphics.newImage("assets/title_hilite.png")
 end
 
 function Graphics:saveData()

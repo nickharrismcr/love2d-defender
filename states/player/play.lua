@@ -17,6 +17,9 @@ function state:enter(co,world,entity,dt)
 	d.hide=false
 	co.thrust=false
 	entity.eventManager:fireEvent(PlayerStart())
+	if keys:isDown("reverse") then
+		co.reverse=true
+	end
 end
 
 function state:update (co,world,entity,dt)

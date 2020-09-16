@@ -52,8 +52,8 @@ function GameSystem:checkCountsEvent(event)
 			entity.eventManager:fireEvent(WorldExplode())
 			local f = function() gl.sound:playMultiple("die") end
 			f()
-			for i=0.5,3,0.25 do
-				gl.engine:schedule{f,i,"time"}
+			for i=1,15 do
+				gl.engine:schedule{f,randf(0,3),"time"}
 			end
 		end
 	end
