@@ -43,15 +43,6 @@ function state:update (game,world,entity,dt)
 		gl.engine:addBaiter()
 		gl.baiters = gl.baiters + 1
 	end
-	
-	local c=0
-	for k,v in pairs(gl.engine:getEntitiesWithComponent("AI")) do
-
-		if v.name=="Lander" and v:isActive() then
-			c=c+1
-		end
-	end
-
 end
 
 return state
