@@ -19,14 +19,14 @@ function BulletMgr:initialize(engine,graphic,mini_graphic,bomb_graphic)
 	self.graphic=graphic
 	self.mini_graphic=mini_graphic
 	self.bomb_graphic=bomb_graphic
+	self.bullet_states=StateTree()
+	self.bullet_states:addStates("states/npc/bullet",{"fire","die"})
+	self.bullet_states:addTransition("fire","die")
 end
 
 function BulletMgr:fireEvent(event)
 
 	local entity=Entity(nil,"Bullet")
-	local bullet_states=StateTree()
-	bullet_states:addStates("states/npc/bullet",{"fire","die"})
-	bullet_states:addTransition("fire","die")
 	local p=gl.player
 	local ppos=gl.player_pos
 	local ps=p.speed*p.dir
@@ -50,7 +50,7 @@ function BulletMgr:fireEvent(event)
 			log.trace("bomb fired")
 		end
 
-		local bullet_fsm=FSM("Bullet",bullet_states,"fire")
+		local bullet_fsm=FSM("Bullet",self.bullet_states,"fire")
 
 		entity:add(AI(bullet_fsm))
 		entity:add(Position(event.x,event.y,dx,dy))
