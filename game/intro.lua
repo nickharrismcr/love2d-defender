@@ -20,9 +20,9 @@ function Intro:initialize(dt)
 	self.hidef=self.gfx.hititle
 	self.hidefx=self.hidef:getWidth()
 	self.disperse=2
-	self.pcycle=getColorCycleFactory(300)
+	self.pcycle=getColorCycleFactory(0.5)
 	self.pcol=nil
-	self.dcycle=getColorCycleFactory(50)
+	self.dcycle=getColorCycleFactory(0.1)
 	self.dcol=nil
 
 	self.defy=self.hidef:getHeight()

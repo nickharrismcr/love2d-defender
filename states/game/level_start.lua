@@ -11,7 +11,8 @@ function state:enter(game,world,entity,dt)
 	if gl.level > 0 then
 		game.savet=game.t
 		local txtsys=gl.engine:getSystem("TextSystem")
-		game.endtextid=txtsys:addString(gl.ww/2,gl.wh/2,2000,sf("ATTACK WAVE %s COMPLETED",gl.level),"center")
+		game.endtextid=txtsys:addString(gl.ww/2,gl.wh/2,0.5,sf("ATTACK WAVE %s COMPLETED",gl.level),"center")
+		log.trace("add endlevel")
 	end
 	gl.level=gl.level+1
 	game.c=1

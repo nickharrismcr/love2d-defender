@@ -1,10 +1,10 @@
 
 local TextDraw = class("TextDraw")
 
-function TextDraw:initialize(texture,quad,color_func)
+function TextDraw:initialize(texture,quads,color_func)
 
 	self.texture = texture
-	self.quad = quad 
+	self.quads = quads
 	self.color_func= color_func
 end
 

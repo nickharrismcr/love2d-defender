@@ -49,11 +49,16 @@ end
 function TextDrawSystem:Do(move,draw)
 
 	col=draw.color_func(love.timer.getDelta())
-	love.graphics.setColor(col.r,col.g,col.b,1)
-	love.graphics.draw(draw.texture,draw.quad,move.x,move.y,0,0.75,0.75)
-	love.graphics.setColor(col.r,col.g,col.b,0.1)
-	love.graphics.draw(draw.texture,draw.quad,move.x-2,move.y-2,0,1,1)
-	love.graphics.draw(draw.texture,draw.quad,move.x-4,move.y-4,0,1.3,1,3)
+	for i,quad in ipairs(draw.quads) do
+		if quad ~= 1 then 
+			local xx=move.x+i*25
+			love.graphics.setColor(col.r,col.g,col.b,1)
+			love.graphics.draw(draw.texture,quad,xx,move.y,0,0.75,0.75)
+			love.graphics.setColor(col.r,col.g,col.b,0.1)
+			love.graphics.draw(draw.texture,quad,xx-2,move.y-2,0,1,1)
+			love.graphics.draw(draw.texture,quad,xx-4,move.y-4,0,1.3,1,3)
+		end
+	end
 end
 
 function TextDrawSystem:requires()

@@ -43,7 +43,7 @@ function NPCRadarDrawSystem:DoRadarDrawRadar(x,y,graphic,frame)
 
 	local rr=gl.radar_rect
 	local radar_width=rr.x2-rr.x1
-	local screen_x = x - gl.cam_pos
+	local screen_x = x - gl.engine.camera.x
 	local radar_win_start=(gl.ww/2)-(gl.ww/2)*radar_width/gl.worldwidth
 	local xp=radar_win_start+(screen_x * radar_width/gl.worldwidth)
 	if xp < rr.x1 then xp = xp + radar_width end

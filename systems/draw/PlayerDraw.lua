@@ -36,6 +36,7 @@ function PlayerDrawSystem:draw()
 		local bg=draw.bgraphic
 		local camera=gl.engine.camera
 		local translate=pos.x-camera.x
+		log.debug(translate)
 		if pos.x < (camera.x + gl.ww - gl.worldwidth) then
 			translate=translate+gl.worldwidth
 		end
@@ -121,7 +122,7 @@ function PlayerDrawSystem:DoDrawRadar(ai,pos)
 
 	local rr=gl.radar_rect
 	local radar_width=rr.x2-rr.x1
-	local player_screen_x = pos.x - gl.cam_pos
+	local player_screen_x = pos.x - gl.engine.camera.x
 	local radar_win_start=(gl.ww/2)-(gl.ww/2)*radar_width/gl.worldwidth
 
 	local xp=radar_win_start+(player_screen_x * radar_width/gl.worldwidth)

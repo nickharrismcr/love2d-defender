@@ -20,7 +20,7 @@ function WorldDrawSystem:draw(dt)
 			for i=1,500 do
 				local ind=math.random(1,world.worldwidth)
 				local wp=world.points
-				wp[ind]=wp[ind]+dys[(ind%5)+1]
+				wp[ind]=wp[ind]+dys[(ind%5)+1]*love.timer.getDelta()*300
 				if coin(0.02) then world.points[ind]=-1000 end
 			end	
 		end

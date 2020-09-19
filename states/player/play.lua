@@ -92,7 +92,7 @@ function state:update (co,world,entity,dt)
 	pos.dx = co.speed * co.dir 
 	pos.x = pos.x + pos.dx * dt
 
-	gl.cam_pos = pos.x - co.offset
+	gl.engine.camera.x = pos.x - co.offset
 
 end
 

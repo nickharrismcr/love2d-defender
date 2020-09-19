@@ -13,7 +13,7 @@ magenta={r=1,g=0,b=1}
 dgreen={r=0,g=0.5,b=0}
 grey={r=0.5,g=0.5,b=0.5}
 
-function getColorCycleFactory(frames)
+function getColorCycleFactory(time)
 
 	local col_list={red,blue,purple,yellow}
 	local ind=1
@@ -21,27 +21,38 @@ function getColorCycleFactory(frames)
 	local dr=0
 	local dg=0
 	local db=0
-	local tc=frames
+	local tc=0
 
 	function _closure(dt)
 
-		tc=tc+420*dt
-		gl.db1=tc
-		col.r=col.r+dr
-		col.g=col.g+dg
-		col.b=col.b+db
-		if tc>=frames then
+		tc=tc+dt
+		col.r=clamp(col.r+dr*dt,0,1)
+		col.g=clamp(col.g+dg*dt,0,1)
+		col.b=clamp(col.b+db*dt,0,1)
+		if tc>=time then
 			tc=0
 			nextcol=col_list[(ind+1)%4+1]	
 			ind=ind+1
-			dr=2*(nextcol.r-col.r)/frames
-			dg=2*(nextcol.g-col.g)/frames
-			db=2*(nextcol.b-col.b)/frames
+			dr=(nextcol.r-col.r)/time
+			dg=(nextcol.g-col.g)/time
+			db=(nextcol.b-col.b)/time
+			log.trace(sf("%2.2f %2.5f %2.5f %2.2f %2.2f %2.2f %2.2f %2.2f %2.2f ",time,dt,tc,col.r,col.g,col.b,dr,dg,db))
 		end
 		return col
 	end
 
 	return _closure
+end
+-------------------------------------------------------------------------------------------------------
+function testGetColorCycle(time,dt)
+
+	local c=getColorCycleFactory(time)
+	local tv = 0
+	for i = 1,10000 do
+		tv=tv+dt
+		local col=c(dt)
+		log.trace(sf("%s,%s,%s",i,tv,t(col)))
+	end
 end
 -------------------------------------------------------------------------------------------------------
 function add_wrap(a,b)

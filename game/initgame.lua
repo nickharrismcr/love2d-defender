@@ -15,12 +15,12 @@ WORLD_INACTIVE=2
 
 function init_game()
 
-	--log.outfile=sf("logs/defender.%s.log",os.date("%d%m%y%H%M%S"))
+	log.outfile=sf("logs/defender.%s.log",os.date("%d%m%y%H%M%S"))
 	log.level="error"
 
 	-- debug
-	gl.debug = false
-	gl.nodie= false
+	gl.debug = false 
+	gl.nodie= true  
 	gl.npc_debug=false
 	gl.freeze=false 
 	-- displays
@@ -65,7 +65,6 @@ function init_game()
 	gl.level=0
 	gl.lives=3
 	gl.bombs=5
-	gl.cam_pos = 1
 	gl.score=0
 	gl.worldstatus=WORLD_ACTIVE
 	gl.player_pos=nil
@@ -81,6 +80,7 @@ function init_game()
 		gl.pods=2
 		gl.level_waves=1
 		gl.lives=1
+		log.level="trace"
 		--gl.nodie=true
 	end
 
@@ -147,9 +147,10 @@ function init_game()
 	local game_sys = GameSystem()
 
 	-- system.engine set by addSystem!
+	engine:addSystem(player_sys,"update")
+	engine:addSystem(game_sys,"update")
 	engine:addSystem(ai_sys,"update")
 	engine:addSystem(PositionSystem(),"update")
-	engine:addSystem(player_sys,"update")
 	engine:addSystem(star_sys,"update")
 	engine:addSystem(LaserSystem(),"update")
 	engine:addSystem(TextSystem(),"update")
@@ -157,12 +158,11 @@ function init_game()
 	engine:addSystem(LifeSystem(),"update")
 	engine:addSystem(CollideSystem(),"update")
 	engine:addSystem(ScheduleSystem(),"update")
-	engine:addSystem(game_sys,"update")
 
+	engine:addSystem(PlayerDrawSystem(),"draw")
 	engine:addSystem(NPCDrawSystem(),"draw")
 	engine:addSystem(NPCRadarDrawSystem(),"draw")
 	engine:addSystem(WorldDrawSystem(),"draw")
-	engine:addSystem(PlayerDrawSystem(),"draw")
 	engine:addSystem(LaserDrawSystem(),"draw")
 	engine:addSystem(StarDrawSystem(),"draw")
 	engine:addSystem(TextDrawSystem(),"draw")
@@ -242,7 +242,7 @@ function init_game()
 
 	-- score text
 	local sys=engine:getSystem("TextSystem")
-	gl.score_id=sys:addString(10,10,2000,sf("%07d",gl.score))
+	gl.score_id=sys:addString(10,10,1,sf("%07d",gl.score))
 
 	gl.engine=engine
 	return engine

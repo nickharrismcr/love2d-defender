@@ -15,7 +15,7 @@ end
 function state:update (ai,world,entity,dt)
 
 	local pos=entity:get("Position")
-	pos.dy = pos.dy + 0.5
+	pos.dy = pos.dy + dt * 60
 	pos.y = pos.y + pos.dy * dt
 	if pos.y >  world:at(pos.x) then
 		if ai.sy < gl.wh/2 then

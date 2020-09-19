@@ -3,7 +3,7 @@ require "systems/helpers/pixeldraw"
 
 local NPCDrawSystem = class("NPCDrawSystem", System)
 
-local cycle=getColorCycleFactory(30)
+local cycle=getColorCycleFactory(0.2)
 
 function NPCDrawSystem:draw(dt)
 
