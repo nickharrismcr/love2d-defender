@@ -31,7 +31,7 @@ end
 
 function state:update (game,world,entity,dt)
 
-	if game.wave < gl.level_waves and game.t > gl.wave_delay then
+	if game.wave < gl.level_waves and (game.t > gl.wave_delay or gl.worldstatus==WORLD_EXPLODING) then
 		gl.engine:addLanders(gl.landers)
 		game.t=0
 		game.wave = game.wave + 1

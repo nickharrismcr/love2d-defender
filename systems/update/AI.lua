@@ -27,8 +27,10 @@ function AISystem:mutateAll(event)
 	for key,entity in pairs(self.targets) do
 		if entity:isActive() and entity.name=="Lander" then
 			local ai=entity:get("AI") 
-			if ai.fsm.state ~= "die" then
+			if ai.fsm.state == "search" or ai.fsm.state=="grabbing" or ai.fsm.state=="grabbed" then
 				ai.fsm:setState("mutant")
+			else
+				gl.engine:removeEntity(entity)
 			end
 		end
 	end
@@ -69,7 +71,6 @@ function AISystem:smartBombEvent()
 	local bomb = function ()
 		for key,entity in pairs(self.targets) do
 			if entity:isActive() and entity:has("Shootable") and not (entity.name == "Human") then
-				local pos=entity:get("Position")
 				local draw=entity:get("NPCDraw")
 				if draw.on_screen then
 					local ai=entity:get("AI") 

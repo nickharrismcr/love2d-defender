@@ -14,6 +14,7 @@ function NPCDrawSystem:draw(dt)
 		local ai=value:get("AI")
 		local pos=value:get("Position")
 		local draw=value:get("NPCDraw")
+		local s_on_screen=draw.on_screen
 		if draw.visible then 
 
 			draw.on_screen=false
@@ -28,10 +29,10 @@ function NPCDrawSystem:draw(dt)
 				translate=translate-gl.worldwidth
 			end
 			if translate > - 100 and translate < gl.ww + 100 then
-				if gl.npc_debug then 
-					self:debugDraw(value,ai,translate,pos)
-				end
 				draw.on_screen=true
+				if gl.npc_debug then 
+					self:debugDraw(value,ai,translate,pos,draw.on_screen)
+				end
 				local col
 				if draw.cycle then 
 					col=cycle_col
@@ -52,16 +53,17 @@ function NPCDrawSystem:draw(dt)
 	end
 end
 
-function NPCDrawSystem:debugDraw(value,ai,translate,pos)
+function NPCDrawSystem:debugDraw(value,ai,translate,pos,on_screen)
 
 	love.graphics.setColor(1,1,1,1)
 	if ai.fsm.state then
 		love.graphics.print(ai.fsm.state,translate+30,pos.y-20,0,1,1)
 		love.graphics.print(sf("%s %s",math.floor(pos.x),math.floor(pos.y)),translate+30,pos.y,0,1,1)
-		love.graphics.print(value.id,translate+30,pos.y+20,0,1,1)
+		love.graphics.print(value.myid,translate+30,pos.y+20,0,1,1)
 		if ai.target then
 			love.graphics.print(sf("t=%s",ai.target.id),translate+30,pos.y+40,0,1,1)
 		end
+		love.graphics.print(sf("%s",on_screen),translate+30,pos.y+60,0,1,1)
 	end
 	local coll=value:get("Collide")
 	if coll then

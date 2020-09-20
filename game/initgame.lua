@@ -20,7 +20,7 @@ function init_game()
 
 	-- debug
 	gl.debug = false 
-	gl.nodie= true  
+	gl.nodie= false 
 	gl.npc_debug=false
 	gl.freeze=false 
 	-- displays

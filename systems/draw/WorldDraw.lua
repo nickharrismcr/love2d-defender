@@ -11,22 +11,23 @@ local dys = { -2,-1,0,1,2 }
 
 function WorldDrawSystem:draw(dt)
 
+	dt=love.timer.getDelta()
 	for index, value in pairs(self.targets) do
 
 		local world=value:get("World")
+		local wp=world.points
 		local camera=value:get("Camera")
 
 		if gl.worldstatus == WORLD_EXPLODING then 
 			for i=1,500 do
 				local ind=math.random(1,world.worldwidth)
-				local wp=world.points
-				wp[ind]=wp[ind]+dys[(ind%5)+1]*love.timer.getDelta()*300
-				if coin(0.02) then world.points[ind]=-1000 end
+				wp[ind]=wp[ind]+dys[(ind%5)+1]*dt*600
+				if coin(dt*10) then wp[ind]=-1000 end
 			end	
 		end
 
-		self:DoDraw(world.points, camera.x )
-		self:DoDrawRadar(world.points, camera.x  )
+		self:DoDraw(wp, camera.x )
+		self:DoDrawRadar(wp, camera.x  )
 	end
 end
 

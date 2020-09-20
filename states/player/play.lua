@@ -80,12 +80,12 @@ function state:update (co,world,entity,dt)
 
 	if co.dir == 1 then
 		if co.offset > co.leftoffset then
-			co.offset = co.offset - 2
+			co.offset = co.offset - 600 * dt
 		end
 	end
 	if co.dir == -1 then
 		if co.offset < co.rightoffset then
-			co.offset = co.offset + 2
+			co.offset = co.offset + 600 * dt
 		end
 	end
 

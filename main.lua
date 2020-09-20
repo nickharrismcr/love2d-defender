@@ -48,7 +48,9 @@ function love.keypressed(key, scancode, isrepeat)
 
    if key == "escape" then love.event.quit() end
    if key == "space" and gl.state==1 then gl.state=2 end
-
+   if key == "6" then
+	   if gl.freeze==false then gl.freeze=true else gl.freeze=false end
+	end
 end
 ---------------------------------------------------------------------------
 function debug_draw()

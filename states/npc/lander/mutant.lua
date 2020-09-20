@@ -12,6 +12,8 @@ function state:enter(comp,world,entity,dt)
 		local hai=comp.human:get("AI")
 		hai.fsm:setState("eaten")
 	end
+	-- in case newly added
+	entity:addMultipleTags({"Shootable","Deadly"})
 	comp.think=0.2
 
 end
