@@ -15,7 +15,6 @@ function state:enter(game,world,entity,dt)
 		log.trace("add endlevel")
 	end
 	gl.level=gl.level+1
-	game.c=1
 end
 
 function state:update (game,world,entity,dt)

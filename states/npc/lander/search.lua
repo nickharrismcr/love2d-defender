@@ -3,15 +3,6 @@ require "events/FireBullet"
 
 local state={}
 
-local function random_choice(tab)
-
-	local list={}
-	for k,v in pairs(tab) do
-		table.insert(list,v)
-	end
-	return list[math.random(#list)]
-end
-
 -- returns entity
 local function pick_target(entity)
 

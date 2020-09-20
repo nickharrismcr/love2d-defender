@@ -4,20 +4,10 @@ require "events/FireBullet"
 
 local state={}
 
-local function random_choice(tab)
-
-	local list={}
-	for k,v in pairs(tab) do
-		table.insert(list,v)
-	end
-	return list[math.random(#list)]
-end
-
 function state:enter(ai,world,entity,dt)
 
 	entity:addMultipleTags({"Shootable","Deadly"})
 	ai.nextthink=1
-	local pos=entity:get("Position")
 end
 
 function state:update (ai,world,entity,dt)
