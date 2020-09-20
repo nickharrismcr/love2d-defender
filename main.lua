@@ -21,7 +21,7 @@ function love.load()
 	engine=init_game(gl)
 	effect=init_effect()
 	states={intro,engine}
-	gl.state=2
+	gl.state=1
 	timer=0
 	framecount=0
 	up_accum=0

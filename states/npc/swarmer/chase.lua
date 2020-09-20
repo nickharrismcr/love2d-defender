@@ -18,6 +18,7 @@ function state:update (ai,world,entity,dt)
 	if gl.freeze then return end 
 
 	local pos=entity:get("Position")
+	local draw=entity:get("NPCDraw")
 
 	ai.nextthink=ai.nextthink -dt
 
@@ -29,15 +30,14 @@ function state:update (ai,world,entity,dt)
 		pos.dx,pos.dy=calc_fire(pp.x+xoff,pp.y+yoff,p.dir*p.speed,pos.x,pos.y,1,1,dt)
 		pos.dx=clamp(pos.dx,-ai.maxsp,ai.maxsp)
 		ai.nextthink=0.2
+		if ai.t > 1 and coin(4*gl.bullet_rate*dt) and draw.on_screen then
+			entity.eventManager:fireEvent(FireBullet(pos.x,pos.y,1,2,"mini"))
+		end
 	end
 
 	pos.x = pos.x + pos.dx * dt
 	pos.y = pos.y + pos.dy * dt 
 
-	local draw=entity:get("NPCDraw")
-	if coin(4*gl.bullet_rate*dt) and draw.on_screen then
-		entity.eventManager:fireEvent(FireBullet(pos.x,pos.y,1,2,"mini"))
-	end
 	if draw.on_screen then
 		gl.sound:playIfNot("swarmer")
 	end
