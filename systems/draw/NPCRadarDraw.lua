@@ -3,7 +3,9 @@ require "systems/helpers/pixeldraw"
 
 local NPCRadarDrawSystem = class("NPCRadarDrawSystem", System)
 
-function NPCRadarDrawSystem:draw(dt)
+function NPCRadarDrawSystem:draw()
+
+	local dt=love.timer.getDelta()
 
 	for index, value in pairs(self.targets) do
 		local ai=value:get("AI")
@@ -25,7 +27,7 @@ function NPCRadarDrawSystem:draw(dt)
 				self:DoRadarDrawRadar(pos.x,pos.y,g,draw.currframe)
 			end
 
-			draw.t = draw.t + 1
+			draw.t = draw.t + 600 * dt
 			if draw.t > draw.ticks and draw.graphic.frames > 1 then
 				draw.t = 0
 				if draw.currframe == draw.graphic.frames then

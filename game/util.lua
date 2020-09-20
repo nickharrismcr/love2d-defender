@@ -124,9 +124,12 @@ function distance(x1,y1,x2,y2)
 
 end
 ---------------------------------------------------------------------------
-function rand_choice(tab)
-	sel=math.random(1,#tab)
-	return tab[sel]
+function random_choice(tab)
+	local list={}
+	for k,v in pairs(tab) do
+		table.insert(list,v)
+	end
+	return list[math.random(#list)]
 end
 ---------------------------------------------------------------------------
 function randf(min,max)

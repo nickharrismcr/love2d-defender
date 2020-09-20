@@ -5,9 +5,10 @@ local NPCDrawSystem = class("NPCDrawSystem", System)
 
 local cycle=getColorCycleFactory(0.2)
 
-function NPCDrawSystem:draw(dt)
+function NPCDrawSystem:draw()
 
-	local cycle_col=cycle(love.timer.getDelta())
+	local dt=love.timer.getDelta()
+	local cycle_col=cycle(dt)
 
 	for index, value in pairs(self.targets) do
 
@@ -40,7 +41,7 @@ function NPCDrawSystem:draw(dt)
 				pixeldraw_disperse(translate ,pos.y,g,draw.currframe, draw.disperse,draw.pixsize,col)
 			end
 
-			draw.t=draw.t+600*love.timer.getDelta()
+			draw.t=draw.t+600*dt
 			if draw.t > draw.ticks and draw.frames > 1 and draw.disperse == 1 then
 				draw.t = 0
 				if draw.currframe == draw.frames then
