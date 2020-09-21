@@ -132,7 +132,7 @@ function init_game()
 	gl.sound:load("swarmer","assets/swarmer.wav",false,1)
 	gl.sound:setVolume("thruster",0.3)
 
-	Engine:include(require ("game/helper"))
+	Engine:include(require ("game/engine_mixins"))
 	local engine = Engine()
 
 	local ai_sys=AISystem()

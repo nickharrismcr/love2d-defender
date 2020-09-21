@@ -19,7 +19,7 @@ function state:update (ai,world,entity,dt)
 	d.disperse = d.disperse - 40 * dt
 	if d.disperse <= 1 then
 		d.disperse = 1
-		ai.fsm:setState("chase")
+		ai.next_state="chase"
 	end
 end
 

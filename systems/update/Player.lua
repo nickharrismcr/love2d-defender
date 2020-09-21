@@ -1,4 +1,6 @@
 require "game/util"
+local FSM=require "game/fsm"
+
 local PlayerSystem = class("PlayerSystem", System)
 
 PlayerSystem.states={}
@@ -6,14 +8,13 @@ PlayerSystem.states={}
 function PlayerSystem:initialize()
 
 	System.initialize(self)
-end
-
-function PlayerSystem:register(list)
-	for i,name in pairs(list) do
-		local fn=require("states/player/"..name)
-		if not fn then error("missing state definition for "..name) end
-		self.states[name]=fn
-	end
+	local StateTree=require "game/statetree"
+	player_states = StateTree()
+	player_states:addStates("states/player",{"materialize", "play", "die", "explode"})
+	player_states:addTransition("play","die")
+	player_states:addTransition("die","explode")
+	player_states:addTransition("explode","play")
+	self.fsm=FSM("Player",player_states)
 end
 
 function PlayerSystem:update(dt)
@@ -24,7 +25,7 @@ function PlayerSystem:update(dt)
 		local ai=entity:get("Player") 
 		local pos=entity:get("Position") 
 		local world=entity:get("World")
-		ai.fsm:update(ai,world,entity,dt)
+		self.fsm:update(ai,world,entity,dt)
 		ai.t = ai.t + 1
 	end
 end
@@ -34,8 +35,8 @@ function PlayerSystem:playerCollide(event)
 
 	assert(event.entity.name=="Human")
 	local ai=event.entity:get("AI")
-	if ai.fsm.state=="falling" then 
-		ai.fsm:setState("rescued")
+	if ai.state=="falling" then 
+		ai.next_state="rescued"
 		self.engine.eventManager:fireEvent(HumanRescued(event.entity))
 	end
 end
@@ -43,7 +44,7 @@ end
 function PlayerSystem:killEvent(event)
 	for index, value in pairs(self.targets) do
 		local ai=value:get("Player") 
-		ai.fsm:setState("die")
+		ai.next_state="die"
 	end
 end
 

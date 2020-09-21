@@ -3,13 +3,13 @@ require "game/util"
 
 local Game = class("Game")
 
-function Game:initialize(fsm,ai_system)
+function Game:initialize()
 
+	self.state=nil
+	self.next_state="level_start"
 	self.level=1
 	self.lives=5
 	self.score=0
-	self.fsm=fsm
-	self.ai_system=ai_system
 	self.t=0
 end
 

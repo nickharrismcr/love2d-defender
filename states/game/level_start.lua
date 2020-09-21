@@ -21,13 +21,13 @@ function state:update (game,world,entity,dt)
 
 	if game.savet then
 		if game.t > game.savet + 3 then
-			game.fsm:setState("level")
+			game.next_state="level"
 			local txtsys=gl.engine:getSystem("TextSystem")
 			txtsys:removeString(game.endtextid)
 			game.savet=nil
 		end
 	else
-		game.fsm:setState("level")
+		game.next_state="level"
 	end
 end
 

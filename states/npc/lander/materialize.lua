@@ -17,7 +17,7 @@ function state:update (component,world,entity,dt)
 	d.disperse = d.disperse - dt *41
 	if d.disperse <= 1 then
 		d.disperse = 1
-		component.fsm:setState("search")
+		component.next_state="search"
 	end
 end
 

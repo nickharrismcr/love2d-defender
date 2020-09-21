@@ -15,7 +15,7 @@ function state:update (ai,world,entity,dt)
 	pos.x=gl.player_pos.x
 	pos.y=gl.player_pos.y+50
 	if pos.y > world:at(pos.x) then
-		ai.fsm:setState("walking")
+		ai.next_state="walking"
 		entity.eventManager:fireEvent(HumanSaved(entity))
 	end
 end

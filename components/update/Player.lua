@@ -1,14 +1,13 @@
 local Player = class("Player")
 require "game/util"
 
-function Player:initialize(fsm)
+function Player:initialize(init_state)
 	
 	self.state=nil
-	self.next_state=nil
+	self.next_state=init_state
 	self.speed=0
 	self.maxspeed=1500
 	self.dir=1
-	self.fsm=fsm
 	self.t=0
 	self.disperse=1
 	self.offset=100

@@ -36,7 +36,6 @@ function PlayerDrawSystem:draw()
 		local bg=draw.bgraphic
 		local camera=gl.engine.camera
 		local translate=pos.x-camera.x
-		log.debug(translate)
 		if pos.x < (camera.x + gl.ww - gl.worldwidth) then
 			translate=translate+gl.worldwidth
 		end

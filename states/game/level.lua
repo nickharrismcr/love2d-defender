@@ -31,13 +31,15 @@ end
 
 function state:update (game,world,entity,dt)
 
+	gl.db1=game.level_landers
+	gl.db2=gl.landers_killed
 	if game.wave < gl.level_waves and (game.t > gl.wave_delay or gl.worldstatus==WORLD_EXPLODING) then
 		gl.engine:addLanders(gl.landers)
 		game.t=0
 		game.wave = game.wave + 1
 	end
 	if gl.lives > 0 and game.wave == gl.level_waves and gl.landers_killed == game.level_landers then
-		game.fsm:setState("level_finish")
+		game.next_state="level_finish"
 	end
 	if game.wave == gl.level_waves and gl.landers_killed > game.level_landers - 3  and gl.baiters < gl.max_baiters then 
 		gl.engine:addBaiter()

@@ -10,7 +10,7 @@ function state:enter(comp,world,entity,dt)
 	rdraw.graphic=gl.graphics:get("r_mutant")
 	if comp.human then 
 		local hai=comp.human:get("AI")
-		hai.fsm:setState("eaten")
+		hai.next_state="eaten"
 	end
 	-- in case newly added
 	entity:addMultipleTags({"Shootable","Deadly"})

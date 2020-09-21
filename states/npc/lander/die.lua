@@ -11,8 +11,8 @@ function state:enter(component,world,entity,dt)
 	local ai= entity:get("AI")
 	if ai.human then
 		local hai=ai.human:get("AI")
-		if hai.fsm.state == "grabbed" then
-			hai.fsm:setState("falling")
+		if hai.state == "grabbed" then
+			hai.next_state="falling"
 		end
 		ai.human=nil
 	end

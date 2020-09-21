@@ -57,8 +57,8 @@ end
 function NPCDrawSystem:debugDraw(value,ai,translate,pos,on_screen)
 
 	love.graphics.setColor(1,1,1,1)
-	if ai.fsm.state then
-		love.graphics.print(ai.fsm.state,translate+30,pos.y-20,0,1,1)
+	if ai.state then
+		love.graphics.print(ai.state,translate+30,pos.y-20,0,1,1)
 		love.graphics.print(sf("%s %s",math.floor(pos.x),math.floor(pos.y)),translate+30,pos.y,0,1,1)
 		love.graphics.print(value.myid,translate+30,pos.y+20,0,1,1)
 		if ai.target then

@@ -5,7 +5,6 @@ local AI = require ('components/update/AI')
 local Collide = require ('components/update/Collide')
 local Position = require ('components/update/Position')
 local NPCDraw  = require ('components/draw/NPCDraw')
-local FSM = require ('game/fsm')
 local StateTree = require ('game/statetree')
 
 local BulletMgr = class("BulletMgr", System)
@@ -19,9 +18,6 @@ function BulletMgr:initialize(engine,graphic,mini_graphic,bomb_graphic)
 	self.graphic=graphic
 	self.mini_graphic=mini_graphic
 	self.bomb_graphic=bomb_graphic
-	self.bullet_states=StateTree()
-	self.bullet_states:addStates("states/npc/bullet",{"fire","die"})
-	self.bullet_states:addTransition("fire","die")
 end
 
 function BulletMgr:fireEvent(event)
@@ -50,9 +46,7 @@ function BulletMgr:fireEvent(event)
 			log.trace("bomb fired")
 		end
 
-		local bullet_fsm=FSM("Bullet",self.bullet_states,"fire")
-
-		entity:add(AI(bullet_fsm))
+		entity:add(AI("bullet","fire"))
 		entity:add(Position(event.x,event.y,dx,dy))
 		entity:add(npcd)
 		entity:add(Collide(g))

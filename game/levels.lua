@@ -2,8 +2,8 @@ local levels={
 
 	{
 		grabspeed = 2,
-		landers=7,
-		humans=10,
+		landers=5,
+		humans=20,
 		lasers=10,
 		pods=0,
 		swarmers=0,
@@ -16,8 +16,8 @@ local levels={
 	},
 	{
 		grabspeed = 2,
-		landers=8,
-		humans=10,
+		landers=6,
+		humans=20,
 		lasers=10,
 		pods=0,
 		swarmers=0,
@@ -30,8 +30,8 @@ local levels={
 	},
 	{
 		grabspeed = 2.5,
-		landers=10,
-		humans=10,
+		landers=7,
+		humans=20,
 		lasers=10,
 		pods=1,
 		swarmers=10,
@@ -44,8 +44,8 @@ local levels={
 	},
 	{
 		grabspeed = 2.5,
-		landers=12,
-		humans=10,
+		landers=8,
+		humans=20,
 		lasers=10,
 		pods=2,
 		swarmers=10,
@@ -58,8 +58,8 @@ local levels={
 	},
 	{
 		grabspeed = 2.7,
-		landers=12,
-		humans=10,
+		landers=9,
+		humans=20,
 		lasers=10,
 		pods=2,
 		swarmers=10,
@@ -72,8 +72,8 @@ local levels={
 	},
 	{
 		grabspeed = 2.7,
-		landers=12,
-		humans=10,
+		landers=10,
+		humans=20,
 		lasers=10,
 		pods=3,
 		swarmers=10,

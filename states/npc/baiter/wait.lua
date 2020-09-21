@@ -9,7 +9,7 @@ function state:update (ai,world,entity,dt)
 
 	local e=entity:get("Position")
 	if ai.wait and  ai.t > ai.wait then 
-		ai.fsm:setState("materialize")
+		ai.next_state="materialize"
 	end
 end
 

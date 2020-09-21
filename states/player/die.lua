@@ -18,7 +18,7 @@ function state:update (co,world,entity,dt)
 
 	co.timer=co.timer-dt
 	if co.timer < 0 then
-		co.fsm:setState("explode")
+		co.next_state="explode"
 	end
 	local d=entity:get("PlayerDraw")
 	d.flash=(math.floor(co.timer*100))%2+1	

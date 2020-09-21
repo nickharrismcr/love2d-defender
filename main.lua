@@ -87,7 +87,13 @@ function love.keypressed(key, scancode, isrepeat)
    if key == "space" and gl.state==1 then gl.state=2 end
    if key == "6" then
 	   if gl.freeze==false then gl.freeze=true else gl.freeze=false end
-	end
+   end
+   if key == "7" then
+	   if gl.npc_debug==false then gl.npc_debug=true else gl.npc_debug=false end
+   end
+   if key == "8" then
+	   if gl.nodie==false then gl.nodie=true else gl.nodie=false end
+   end
 end
 ---------------------------------------------------------------------------
 function debug_draw()

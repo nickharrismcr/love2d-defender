@@ -15,7 +15,7 @@ function state:update (co,world,entity,dt)
 
 	co.timer=co.timer-dt
 	if co.timer < 0 then
-		co.fsm:setState("play")
+		co.next_state="play"
 	end
 end
 

@@ -24,7 +24,7 @@ end
 function state:update (game,world,entity,dt)
 
 	if game.t > game.time +  0.5 then
-		game.fsm:setState("level_start")
+		game.next_state="level_start"
 	end
 end
 

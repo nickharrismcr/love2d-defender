@@ -14,7 +14,17 @@ function GameSystem:initialize()
 		Bomber=250,
 		Pod=1000,
 		Swarmer=150
-	}
+	 }
+	-- game state
+	local StateTree=require ("game/statetree")
+	local states=StateTree()
+	states:addStates("states/game",{ "level_start","level","level_finish","game_over" })
+	states:addTransition("intro","level_start")
+	states:addTransition("level_start","level")
+	states:addTransition("level","level_finish")
+	states:addTransition("level","game_over")
+	states:addTransition("level_finish","level_start")
+	self.fsm=FSM("game",states)
 end
 
 function GameSystem:onAddEntity(entity) 
@@ -24,15 +34,15 @@ end
 
 function GameSystem:update(dt)
 
-	self.game.fsm:update(self.game,nil,entity,dt)
+	self.fsm:update(self.game,nil,entity,dt)
 	self.game.t = self.game.t + dt
-	gl.gamestate = self.game.fsm.state
+	gl.gamestate = self.game.state
 end
 
 function GameSystem:playerStartEvent(event)
 
 	if gl.lives==0 then	
-		self.game.fsm:setState("game_over")
+		self.game.next_state="game_over"
 	end
 
 end
@@ -45,8 +55,7 @@ function GameSystem:checkCountsEvent(event)
 			if entity:has("Human") and entity:isActive() then c=c+1 end
 		end
 		log.trace(sf("Human count %s ",c))
-		-- last one?
-		if c==1 then
+		if c==0 then
 			gl.flash=48
 			gl.worldstatus = WORLD_EXPLODING
 			entity.eventManager:fireEvent(WorldExplode())

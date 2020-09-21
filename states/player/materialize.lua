@@ -5,7 +5,7 @@ function state:update (co,world,entity,dt)
 	draw.disperse = draw.disperse - 0.06
 	if draw.disperse <= 1 then
 		draw.disperse = 1
-		co.fsm:setState("play")
+		co.next_state="play"
 	end
 end
 

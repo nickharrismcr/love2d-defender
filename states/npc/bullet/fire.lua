@@ -6,7 +6,7 @@ function state:update (comp,world,entity,dt)
 	pos.y = pos.y + pos.dy * dt 
 
 	if pos.y > gl.wh or pos.y < gl.top then
-		comp.fsm:setState("die")
+		comp.next_state="die"
 	end
 end
 

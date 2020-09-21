@@ -8,11 +8,11 @@ function state:update (comp,world,entity,dt)
 	local pos=entity:get("Position")
 	pos.y = pos.y - gl.grabspeed * dt * 30
 	if not comp.human then
-		comp.fsm:setState("search")
+		comp.next_state="search"
 		return
 	end
 	if pos.y < gl.top then 
-		comp.fsm:setState("mutant" )
+		comp.next_state="mutant" 
 	end
 end
 

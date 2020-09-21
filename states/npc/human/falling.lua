@@ -19,11 +19,11 @@ function state:update (ai,world,entity,dt)
 	pos.y = pos.y + pos.dy * dt
 	if pos.y >  world:at(pos.x) then
 		if ai.sy < gl.wh/2 then
-			ai.fsm:setState("die")
+			ai.next_state="die"
 		else
 			entity.eventManager:fireEvent(HumanLanded(entity))
 			entity:remove("CollidePlayer")
-			ai.fsm:setState("walking")
+			ai.next_state="walking"
 		end
 	end
 end

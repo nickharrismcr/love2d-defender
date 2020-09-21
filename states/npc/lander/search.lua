@@ -44,9 +44,9 @@ function state:update (ai,world,entity,dt)
 		end
 		local hum_pos=ai.target:get("Position")
 		local hum_ai=ai.target:get("AI")
-		if intersect(hum_pos.x,pos.x,10) and hum_ai.fsm.state == "walking" then
-			ai.fsm:setState("grabbing")
-			hum_ai.fsm:setState("picked" )
+		if intersect(hum_pos.x,pos.x,10) and hum_ai.state == "walking" then
+			ai.next_state="grabbing"
+			hum_ai.next_state="picked" 
 			ai.target.parent = entity
 			ai.human = ai.target
 			if draw.on_screen then
