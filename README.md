@@ -1,4 +1,5 @@
 # love2d-defender
-LOVE2D Defender Clone
+Williams Defender in LOVE2D.
 
-Work in progress. ECS by HooECS. log.lua by rxi. debugger by scott lembke. chainable shader effects by moonshine.
+ECS by HooECS. log.lua by rxi. debugger by scott lembke. chainable shader effects by moonshine.
+TODO : hyperspace. 
